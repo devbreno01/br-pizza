@@ -19,3 +19,6 @@ npm install @prisma/client @prisma/adapter-pg pg dotenv
 
 npx prisma migrate dev
 npx prisma generate 
+
+PrismaClient  serve para manipularmos o nosso banco de dados(inserção,atualizacao, utilizar o ORM em si)
+
