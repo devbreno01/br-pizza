@@ -6,15 +6,7 @@ interface createCategoryProps{
 
 class CreateCategoryService{
     async execute({name}: createCategoryProps){
-        const findCategory = await prismaClient.category.findFirst({
-            where:{
-                name: name
-            }
-        }); 
-
-        if(!findCategory)
-            throw new Error('Categoria já cadastrada'); 
-
+       
         try{
             const category = prismaClient.category.create({
                 data:{
