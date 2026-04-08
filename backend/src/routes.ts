@@ -16,7 +16,8 @@ const detailUserController = new DetailUserController();
 router.get( "/user", (req: Request,res: Response)=>{res.json({message: "teste"}); })
 router.post("/user",validateSchema(CreateUserSchema), createUser.handle);
 router.post("/session",validateSchema(AuthUserSchema),authUser.handle);
-
-
 router.get("/me",isAuthenticated ,detailUserController.handle);
+
+//categories 
+router.post("/category", )
 export { router }; 
