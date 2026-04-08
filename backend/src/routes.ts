@@ -19,5 +19,5 @@ router.post("/session",validateSchema(AuthUserSchema),authUser.handle);
 router.get("/me",isAuthenticated ,detailUserController.handle);
 
 //categories 
-router.post("/category", )
+//router.post("/category",validateSchema() )
 export { router }; 
