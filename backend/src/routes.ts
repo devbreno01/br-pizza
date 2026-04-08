@@ -9,13 +9,13 @@ import { isAuthenticated } from "./middlewares/isAuthenticated";
 import { CreateCategorySchema } from "./schemas/categorySchema";
 import { CreateCategoryController } from "./controllers/category/CreateCategoryController";
 import { isAdmin } from "./middlewares/isAdmin";
-
+import { ListCategoryController } from "./controllers/category/ListCategoryController";
 const router = Router(); 
 const createUser = new CreateUserController();
 const authUser = new AuthUserController(); 
 const detailUserController = new DetailUserController(); 
 const createCategory = new CreateCategoryController(); 
-
+const listCategory = new ListCategoryController(); 
 
 router.get( "/user", (req: Request,res: Response)=>{res.json({message: "teste"}); })
 router.post("/user",validateSchema(CreateUserSchema), createUser.handle);
@@ -29,6 +29,12 @@ router.post(
     isAdmin, 
     validateSchema(CreateCategorySchema),
     createCategory.handle);
+
+router.get(
+    "/categories",
+    isAuthenticated,
+    isAdmin, 
+    listCategory.handle);
 
 
 export { router }; 
