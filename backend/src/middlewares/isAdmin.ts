@@ -15,7 +15,7 @@ export const isAdmin = async (req: Request, res: Response, next: NextFunction):P
             id: userId
         }
     }); 
-
+   
     if(!user){
          res.status(401).json({
             error: "Usuário sem permissão"

@@ -27,7 +27,8 @@ router.post(
     "/category",
     isAuthenticated,
     isAdmin, 
+    validateSchema(CreateCategorySchema),
     createCategory.handle);
 
-    
+
 export { router }; 
