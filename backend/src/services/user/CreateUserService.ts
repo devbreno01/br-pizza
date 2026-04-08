@@ -9,6 +9,7 @@ interface createUserProps {
 
 class CreateUserService {
     async execute({name, email, password}: createUserProps){
+        console.log(name, email, password)
         const findUser = await prismaClient.user.findFirst({
             where:{
                 email: email 

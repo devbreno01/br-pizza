@@ -5,6 +5,7 @@ import { validateSchema } from "./middlewares/validateSchema";
 import { CreateUserSchema } from "./schemas/userSchema";
 import { AuthUserSchema } from "./schemas/userSchema";
 import { DetailUserController } from "./controllers/user/DetailUserController";
+import { isAuthenticated } from "./middlewares/isAuthenticated";
 
 
 const router = Router(); 
@@ -17,5 +18,5 @@ router.post("/user",validateSchema(CreateUserSchema), createUser.handle);
 router.post("/session",validateSchema(AuthUserSchema),authUser.handle);
 
 
-router.get("/me", detailUserController.handle);
+router.get("/me",isAuthenticated ,detailUserController.handle);
 export { router }; 
