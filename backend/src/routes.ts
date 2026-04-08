@@ -8,7 +8,7 @@ import { DetailUserController } from "./controllers/user/DetailUserController";
 import { isAuthenticated } from "./middlewares/isAuthenticated";
 import { CreateCategorySchema } from "./schemas/categorySchema";
 import { CreateCategoryController } from "./controllers/category/CreateCategoryController";
-
+import { isAdmin } from "./middlewares/isAdmin";
 
 const router = Router(); 
 const createUser = new CreateUserController();
@@ -23,5 +23,11 @@ router.post("/session",validateSchema(AuthUserSchema),authUser.handle);
 router.get("/me",isAuthenticated ,detailUserController.handle);
 
 //categories 
-router.post("/category",isAuthenticated, createCategory.handle);
+router.post(
+    "/category",
+    isAuthenticated,
+    isAdmin, 
+    createCategory.handle);
+
+    
 export { router }; 
