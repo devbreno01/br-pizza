@@ -33,7 +33,6 @@ router.post(
 router.get(
     "/categories",
     isAuthenticated,
-    isAdmin, 
     listCategory.handle);
 
 
