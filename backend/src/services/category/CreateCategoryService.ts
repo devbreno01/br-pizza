@@ -2,6 +2,7 @@ import prismaClient from "../../prisma";
 
 interface createCategoryProps{
     name: string
+
 }; 
 
 class CreateCategoryService{
