@@ -8,13 +8,13 @@ export default {
         fileSize: 5 * 1024 * 1024 //5mb
 
     },
-    fileFilter: (req: any, file: Express.Multer.File, callback: any) =>{
+    fileFilter: (req: any, file: Express.Multer.File, cb: any) =>{
         const allowedMimes = ["image/jpeg","image/jpg", "image/png"]; 
 
         if(allowedMimes.includes(file.mimetype)){
-            callback(null, true); 
+            cb(null, true); 
         }else{
-            callback(new Error("Formato de arquivo invalido")); 
+            cb(new Error("Formato de arquivo invalido")); 
         }
 
     }
