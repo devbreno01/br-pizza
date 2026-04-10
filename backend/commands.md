@@ -22,3 +22,10 @@ npx prisma generate
 
 PrismaClient  serve para manipularmos o nosso banco de dados(inserção,atualizacao, utilizar o ORM em si)
 
+
+Cloudnary, serviço utilizado para storage de imagens 
+comando: npm install cloudnary
+npm install muter 
+npm install --save-dev @types/multer
+
+Multer serve para trabalhar com imgs em node. Validação de tipos e etc
