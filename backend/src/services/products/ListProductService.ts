@@ -8,22 +8,26 @@ class ListProductService {
     
 
     async execute({disabled}: listCategoryProps) {
-        const products = prismaClient.product.findMany({
+        try{
+            const products = prismaClient.product.findMany({
             
-            where:{
-                disabled: disabled
-            },
+                where:{
+                    disabled: disabled
+                },
 
-            select:{
-                name: true, 
-                price: true, 
-                description: true, 
-                banner: true,
-                category_id: true
-            }
-        });
+                select:{
+                    name: true, 
+                    price: true, 
+                    description: true, 
+                    banner: true,
+                    category_id: true
+                }
+            });
         
-        return products; 
+            return products;             
+        }catch(error){
+              throw new Error("Falha ao tentar fazer listagem de produtos");
+        }
     }
 }
 
