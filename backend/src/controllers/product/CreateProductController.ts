@@ -13,7 +13,7 @@ class CreateProductController{
 
         const createProduct = await createProductService.execute({
             name:name, 
-            price:price, 
+            price: parseFloat(price), 
             description:description, 
             category_id:category_id,
             imageBuffer: req.file.buffer, 
@@ -21,7 +21,8 @@ class CreateProductController{
         });
 
         return res.json({
-            message:"testingg"
+            message:"success", 
+            data: createProduct
         });
     }
 }

@@ -14,6 +14,7 @@ interface CreateProductServiceProps{
 
 
 class CreateProductService {
+
     async execute({name ,price,description ,imageBuffer ,imageName ,category_id}: CreateProductServiceProps){
 
         const verifyCategory = prismaClient.category.findFirst({
@@ -26,10 +27,11 @@ class CreateProductService {
             throw new Error("Categoria não existente"); 
         }
 
-        let bannerUrl = ""; 
-
+        
+        let bannerUrl: string = ""; 
         try{
             const result = await new Promise<any>((resolve,reject)=>{
+
                 const uploadStream = cloudinary.uploader.upload_stream({
                     folder: "products", 
                     resource_type: "image", 
@@ -41,13 +43,14 @@ class CreateProductService {
                         resolve(result)
                     }
 
-                })
+                });
 
                 const buffetStream = Readable.from(imageBuffer);
                 buffetStream.pipe(uploadStream);
             }); 
 
             console.log(result); 
+            bannerUrl  = result.secure_url; 
 
            
         }catch(error){
@@ -77,6 +80,28 @@ class CreateProductService {
         }catch(error){
             throw new Error("Erro ao tentar cadastrar produto. Tente novamente!"); 
         }
+
+        const product = await prismaClient.product.create({
+            data:{
+                name: name, 
+                price: price, 
+                description: description, 
+                category_id: category_id, 
+                banner: bannerUrl 
+            }, 
+            select:{
+                id: true, 
+                name: true, 
+                price: true, 
+                description: true, 
+                banner: true,
+                category_id: true, 
+                createdAt: true
+
+            }
+        });
+
+        return product; 
     }
 
 
