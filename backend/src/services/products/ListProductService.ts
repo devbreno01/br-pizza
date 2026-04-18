@@ -1,7 +1,7 @@
 import prismaClient from "../../prisma"
 
 interface listCategoryProps{
-    disabled: boolean
+    disabled: boolean | undefined
 }
 
 class ListProductService {
@@ -26,3 +26,5 @@ class ListProductService {
         return products; 
     }
 }
+
+export {ListProductService}

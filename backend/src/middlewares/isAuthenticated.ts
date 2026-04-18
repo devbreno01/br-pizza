@@ -28,6 +28,7 @@ export function isAuthenticated(req: Request, res: Response, next: NextFunction)
         //inserting user_id into the body of the requisition 
 
         req.user_id = sub;
+       
     }catch(error){
          return res.status(401).json({
             error: "Token inválido"

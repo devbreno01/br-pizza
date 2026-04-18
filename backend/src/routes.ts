@@ -13,6 +13,7 @@ import { createProductSchema } from "./schemas/productSchema";
 import { isAdmin } from "./middlewares/isAdmin";
 import { ListCategoryController } from "./controllers/category/ListCategoryController";
 import { CreateProductController } from "./controllers/product/CreateProductController";
+import { ListProductController } from "./controllers/product/ListProductController";
 import uploadConfig from './config/multer'; 
 
 const router = Router(); 
@@ -24,7 +25,7 @@ const detailUserController = new DetailUserController();
 const createCategory = new CreateCategoryController(); 
 const listCategory = new ListCategoryController(); 
 const createProduct = new CreateProductController(); 
-
+const listProduct = new ListProductController(); 
 router.get( "/user", (req: Request,res: Response)=>{res.json({message: "teste"}); })
 router.post("/user",validateSchema(CreateUserSchema), createUser.handle);
 router.post("/session",validateSchema(AuthUserSchema),authUser.handle);
@@ -53,6 +54,10 @@ router.post(
     validateSchema(createProductSchema),
     createProduct.handle);
 
-    
+
+router.get(
+    "/products",
+    isAuthenticated,
+    listProduct.handle);
 
 export { router }; 
