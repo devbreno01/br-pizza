@@ -9,6 +9,7 @@ import { DetailUserController } from "./controllers/user/DetailUserController";
 import { isAuthenticated } from "./middlewares/isAuthenticated";
 import { CreateCategorySchema } from "./schemas/categorySchema";
 import { CreateCategoryController } from "./controllers/category/CreateCategoryController";
+import { createProductSchema } from "./schemas/productSchema";
 import { isAdmin } from "./middlewares/isAdmin";
 import { ListCategoryController } from "./controllers/category/ListCategoryController";
 import { CreateProductController } from "./controllers/product/CreateProductController";
@@ -49,6 +50,7 @@ router.post(
     isAuthenticated, 
     isAdmin,
     upload.single("file"),
+    validateSchema(createProductSchema),
     createProduct.handle);
 
     
