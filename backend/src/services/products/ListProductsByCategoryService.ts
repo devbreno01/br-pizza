@@ -6,7 +6,8 @@ class ListProductsByCategoryService{
             const products = prismaClient.product.findMany({
             
                 where:{
-                    category_id: category_id
+                    category_id: category_id,
+                    disabled: false
                 },
 
                 select:{
