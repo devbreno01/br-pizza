@@ -74,7 +74,7 @@ router.delete(
     deleteProduct.handle);
 
 router.get(
-    "/products/:category_id",
+    "/category/product/:category_id",
     isAuthenticated,
     listProductsCategory.handle);
 
