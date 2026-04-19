@@ -15,6 +15,7 @@ import { ListCategoryController } from "./controllers/category/ListCategoryContr
 import { CreateProductController } from "./controllers/product/CreateProductController";
 import { ListProductController } from "./controllers/product/ListProductController";
 import { DeleteProductController } from "./controllers/product/DeleteProductController";
+import { ListProductsByCategoryController } from "./controllers/product/ListProductsByCategoryController";
 import uploadConfig from './config/multer'; 
 
 const router = Router(); 
@@ -29,6 +30,7 @@ const createProduct = new CreateProductController();
 const listProduct = new ListProductController(); 
 const deleteProduct = new DeleteProductController();
 
+const listProductsCategory = new ListProductsByCategoryController();
 
 router.get( "/user", (req: Request,res: Response)=>{res.json({message: "teste"}); })
 router.post("/user",validateSchema(CreateUserSchema), createUser.handle);
@@ -71,5 +73,10 @@ router.delete(
     isAuthenticated,
     deleteProduct.handle);
 
+router.get(
+    "/products/:category_id",
+    isAuthenticated,
+    listProductsCategory.handle);
 
+git
 export { router }; 
