@@ -12,10 +12,13 @@ class DeleteProductService{
                 data:{
                     disabled: true
                 },
-                where:{id: id}
+                where:{id: id},
+                select:{
+                    disabled:true
+                }
             })
 
-            return deleteProduct; 
+            return {message: "Produto deletado com sucesso"}; 
         }catch(error){
             throw new Error("erro ao deletar produto")
         }
