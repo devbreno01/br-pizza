@@ -15,8 +15,12 @@ import { ListCategoryController } from "./controllers/category/ListCategoryContr
 import { CreateProductController } from "./controllers/product/CreateProductController";
 import { ListProductController } from "./controllers/product/ListProductController";
 import { DeleteProductController } from "./controllers/product/DeleteProductController";
+import { CreateOrderController } from "./controllers/order/CreateOrderController";
 import { ListProductsByCategoryController } from "./controllers/product/ListProductsByCategoryController";
+import { ListOrdersController } from "./controllers/order/ListOrdersController";
 import uploadConfig from './config/multer'; 
+import { CreateOrderSchema } from "./schemas/orderSchema";
+
 
 const router = Router(); 
 const upload = multer(uploadConfig);
@@ -29,8 +33,9 @@ const listCategory = new ListCategoryController();
 const createProduct = new CreateProductController(); 
 const listProduct = new ListProductController(); 
 const deleteProduct = new DeleteProductController();
-
+const createOrder =  new CreateOrderController(); 
 const listProductsCategory = new ListProductsByCategoryController();
+const listOrders = new ListOrdersController(); 
 
 router.get( "/user", (req: Request,res: Response)=>{res.json({message: "teste"}); })
 router.post("/user",validateSchema(CreateUserSchema), createUser.handle);
@@ -77,6 +82,20 @@ router.get(
     "/category/product/:category_id",
     isAuthenticated,
     listProductsCategory.handle);
+
+//orders 
+router.post(
+    "/orders", 
+    isAuthenticated,
+    validateSchema(CreateOrderSchema), 
+    createOrder.handle
+)
+
+router.get(
+    "/orders", 
+    isAuthenticated, 
+    listOrders.handle
+)
 
 
 export { router }; 
