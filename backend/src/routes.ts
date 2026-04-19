@@ -78,5 +78,5 @@ router.get(
     isAuthenticated,
     listProductsCategory.handle);
 
-git
+
 export { router }; 
