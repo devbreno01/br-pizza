@@ -14,6 +14,7 @@ import { isAdmin } from "./middlewares/isAdmin";
 import { ListCategoryController } from "./controllers/category/ListCategoryController";
 import { CreateProductController } from "./controllers/product/CreateProductController";
 import { ListProductController } from "./controllers/product/ListProductController";
+import { DeleteProductController } from "./controllers/product/DeleteProductController";
 import uploadConfig from './config/multer'; 
 
 const router = Router(); 
@@ -26,6 +27,9 @@ const createCategory = new CreateCategoryController();
 const listCategory = new ListCategoryController(); 
 const createProduct = new CreateProductController(); 
 const listProduct = new ListProductController(); 
+const deleteProduct = new DeleteProductController();
+
+
 router.get( "/user", (req: Request,res: Response)=>{res.json({message: "teste"}); })
 router.post("/user",validateSchema(CreateUserSchema), createUser.handle);
 router.post("/session",validateSchema(AuthUserSchema),authUser.handle);
@@ -62,5 +66,10 @@ router.get(
 
 
     
+router.delete(
+    "/products/:id",
+    isAuthenticated,
+    deleteProduct.handle);
+
 
 export { router }; 
