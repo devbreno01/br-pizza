@@ -18,19 +18,19 @@ class AddItemOrderService{
             if(!oderExists){
                 throw new Error("Ordem não encontrada"); 
             }
-
+            
              const productExists = await prismaClient.product.findFirst({
                 where:{
                     id: product_id, 
                     disabled: false 
                 }
             }); 
-
+            console.log("procurou produto")
             if(!productExists){
                 throw new Error("Produto não encontrado"); 
             }
 
-
+           
             const item = await prismaClient.item.create({
                 data:{
                     order_id: order_id, 
@@ -63,4 +63,4 @@ class AddItemOrderService{
     }
 }
 
-export {AddItemOrderService}
+export {AddItemOrderService}    
