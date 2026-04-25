@@ -29,3 +29,9 @@ npm install muter
 npm install --save-dev @types/multer
 
 Multer serve para trabalhar com imgs em node. Validação de tipos e etc
+
+
+swagger ui:
+npm install swagger-ui-express swagger-jsdoc
+npm install -D @types/swagger-jsdoc
+npm install -D @types/swagger-ui-express

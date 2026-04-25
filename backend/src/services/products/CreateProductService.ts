@@ -49,7 +49,7 @@ class CreateProductService {
                 buffetStream.pipe(uploadStream);
             }); 
 
-            console.log(result); 
+            
             bannerUrl  = result.secure_url; 
 
            
