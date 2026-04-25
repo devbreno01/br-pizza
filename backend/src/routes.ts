@@ -138,7 +138,7 @@ const sendOrder = new SendOrderController();
 const finishOrder = new FinishOrderController(); 
 const deleteOrder = new DeleteOrderController(); 
 
-router.get( "/user", (req: Request,res: Response)=>{res.json({message: "teste"}); })
+
 
 /**
  * @swagger
