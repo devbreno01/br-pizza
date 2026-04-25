@@ -2,28 +2,50 @@
 import { Request, Response } from "express"; 
 import prismaClient from "../../prisma";
 
-class ListOrdersService {
-    async execute(draft?: boolean){
+interface ItemOrderProps{
+    order_id: string
+}
 
-        console.log(draft);
+class ListOrdersItemService {
+   async execute({order_id}: ItemOrderProps){
+     
         try{
-            const listOrders = await prismaClient.order.findMany({
+           
+            
+            const searchItem = await prismaClient.order.findFirst({
                 where:{
-                    ...(draft !== undefined && { draft })
+                    id : order_id
                 }, 
                 select:{
                     table: true, 
-                    status: true, 
                     draft: true, 
-                    name: true 
-                }
-            })
+                    status: true, 
+                    createdAt: true, 
+                    itens:{
+                        select:{
+                            id: true, 
+                            amount:true, 
+                            product: {
+                               select:{
+                                    name: true, 
+                                    price: true, 
+                                    description: true, 
+                                    banner: true, 
+                                    disabled: true
+                               }
+                            }
+                        }
+                    }
 
-            return listOrders; 
+                }
+            });
+
+           
+            return searchItem; 
         }catch(error){
-            throw new Error("Erro ao exibir listagem")
+            throw new Error("Falha ao listar detalhes do pedido"); 
         }
     }
 }
 
-export {ListOrdersService}
+export {ListOrdersItemService}

@@ -6,7 +6,7 @@ interface ItemOrderProps{
 } 
 class RemoveItemOrderService{
     async execute({id}: ItemOrderProps){
-        console.log('Entrou metodo remove service ');
+        
         try{
             const searchItem = await prismaClient.item.findFirst({
                 where:{
@@ -17,7 +17,7 @@ class RemoveItemOrderService{
             if(!searchItem){
                 throw new Error('Item não existe ou já foi deletado'); 
             }
-            console.log('Antes do delete'); 
+            
             const deleteItem = await prismaClient.item.delete({
                 where:{
                     id : id

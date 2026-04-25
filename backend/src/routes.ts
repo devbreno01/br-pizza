@@ -23,6 +23,8 @@ import { CreateOrderSchema } from "./schemas/orderSchema";
 import { AddItemOrderController } from "./controllers/order/AddItemOrderController";
 import { AddItemSchema } from "./schemas/orderSchema";
 import { RemoveItemOrderController } from "./controllers/order/RemoveItemOrderController";
+import { ListOrderDetailController } from "./controllers/order/ListOrderDetailController";
+
 const router = Router(); 
 const upload = multer(uploadConfig);
 
@@ -40,6 +42,9 @@ const listProductsCategory = new ListProductsByCategoryController();
 const listOrders = new ListOrdersController(); 
 const addItemOrder = new AddItemOrderController();
 const removeItem = new RemoveItemOrderController(); 
+const listOrderDetails = new ListOrderDetailController(); 
+
+
 router.get( "/user", (req: Request,res: Response)=>{res.json({message: "teste"}); })
 router.post("/user",validateSchema(CreateUserSchema), createUser.handle);
 router.post("/session",validateSchema(AuthUserSchema),authUser.handle);
@@ -112,6 +117,12 @@ router.delete(
     "/order/remove/:id", 
     isAuthenticated, 
     removeItem.handle
+); 
+
+router.get(
+    "/order/detail/:id", 
+    isAuthenticated, 
+    listOrderDetails.handle
 )
 
 export { router }; 
