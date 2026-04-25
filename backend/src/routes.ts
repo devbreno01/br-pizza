@@ -24,6 +24,8 @@ import { AddItemOrderController } from "./controllers/order/AddItemOrderControll
 import { AddItemSchema } from "./schemas/orderSchema";
 import { RemoveItemOrderController } from "./controllers/order/RemoveItemOrderController";
 import { ListOrderDetailController } from "./controllers/order/ListOrderDetailController";
+import { SendOrderController } from "./controllers/order/SendOrderController";
+import { updateOrderSchema } from "./schemas/orderSchema";
 
 const router = Router(); 
 const upload = multer(uploadConfig);
@@ -43,7 +45,7 @@ const listOrders = new ListOrdersController();
 const addItemOrder = new AddItemOrderController();
 const removeItem = new RemoveItemOrderController(); 
 const listOrderDetails = new ListOrderDetailController(); 
-
+const sendOrder = new SendOrderController();
 
 router.get( "/user", (req: Request,res: Response)=>{res.json({message: "teste"}); })
 router.post("/user",validateSchema(CreateUserSchema), createUser.handle);
@@ -124,5 +126,13 @@ router.get(
     isAuthenticated, 
     listOrderDetails.handle
 )
+
+router.put(
+    "/order/send", 
+    isAuthenticated, 
+    validateSchema(updateOrderSchema), 
+    sendOrder.handle
+)
+
 
 export { router }; 

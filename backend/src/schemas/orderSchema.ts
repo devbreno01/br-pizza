@@ -29,3 +29,14 @@ export const AddItemSchema  = z.object({
         
     })
 });
+
+export const updateOrderSchema = z.object({
+    body: z.object({
+        order_id: 
+            z.string({message: "O id do pedido precisa ser passado"}), 
+
+        name: 
+            z.string({message: "O nome do cliente precisa ser passado "})
+        
+    })
+});
