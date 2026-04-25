@@ -63,8 +63,8 @@ model Product{
 model Order{
   id String @id @default(uuid())
   table Int
-  draft Boolean //status to send to production (for cooking)
-  status Boolean
+  draft Boolean @default(true)
+  status Boolean @default(false)
   name String? //? -> is for optional columns
 
   createdAt DateTime @default(now())
