@@ -8,7 +8,7 @@ interface SendOrderProps {
 class SendOrderService {
     async execute({name, order_id} :SendOrderProps ){
         try{
-             const oderExists = await prismaClient.order.findFirst({
+            const oderExists = await prismaClient.order.findFirst({
                 where:{
                     id: order_id
                 }
