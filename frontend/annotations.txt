@@ -1,1 +1,6 @@
 sidebar on sahdcn is Sheet
+
+
+NEXT_PUBLIC_API_URL is able to use in the browser 
+API_URL is able to use only for server components, server actions and api routes 
+

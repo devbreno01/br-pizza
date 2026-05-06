@@ -1,0 +1,47 @@
+
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL; 
+
+
+export function getApiUrl()  {
+    return API_URL; 
+}
+
+interface FetchOptions extends RequestInit{
+    token?: string, 
+    cache?:  "force-cache" | "no-store"; 
+    next?: {
+        revalidate?: false | 0 | number, 
+        tags?: string[]
+    }
+}
+export async function getApiClient <T> (
+    endpoint: string, 
+    options: FetchOptions ={}
+): Promise<T>{
+    
+    const {token, ...fetchOptions} = options; 
+
+    const headers: Record<string,string> = {
+        ...(fetchOptions.headers as Record<string, string>) 
+    }
+
+    if(token){
+        headers["Authorization"] = `Bearer ${token}` 
+    }
+
+    const response = await fetch(`${API_URL}${endpoint}`,{
+        ...fetchOptions, 
+        headers
+    }); 
+
+    if(response.ok){
+        const error = response.json().catch(()=>({
+            error: "Erro HTTP: " + response.status  
+        }))
+
+        throw new Error(error.error || "Erro na requisiçãp");
+    }
+
+    return response.json(); 
+}
