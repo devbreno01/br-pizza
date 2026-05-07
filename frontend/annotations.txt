@@ -4,3 +4,18 @@ sidebar on sahdcn is Sheet
 NEXT_PUBLIC_API_URL is able to use in the browser 
 API_URL is able to use only for server components, server actions and api routes 
 
+API CLIENT
+
+fetchOption interface utiliza como herança RequestInit que já possui todos os parametros que são passados como segundo argumento no fetch 
+Exemplo:
+Authorization 
+Body 
+
+fetchOptions interface é passado como opção o cache com revaldiate,tudo parametro opcional.
+Agora chega a parte interessante, no trecho de código abaixo:
+const { token, ...fetchOptions } = options;
+
+Ele a variavel options e salva o token em uma variavel diferente. Todo o resto do objeto ele salva em outra variavel chamada fetchOptions
+
+<T> em typescript means 
+I don't know what the API will return yet — tell me when you call this function

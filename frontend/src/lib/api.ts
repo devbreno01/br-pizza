@@ -20,8 +20,10 @@ export async function getApiClient <T> (
     options: FetchOptions ={}
 ): Promise<T>{
     
+    
     const {token, ...fetchOptions} = options; 
 
+    //Record is an object where both keys and values are strings
     const headers: Record<string,string> = {
         ...(fetchOptions.headers as Record<string, string>) 
     }
@@ -38,8 +40,8 @@ export async function getApiClient <T> (
         headers
     }); 
 
-    if(response.ok){
-        const error = response.json().catch(()=>({
+    if(!response.ok){
+        const error = await response.json().catch(()=>({
             error: "Erro HTTP: " + response.status  
         }))
 
