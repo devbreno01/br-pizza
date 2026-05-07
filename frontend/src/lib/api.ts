@@ -30,6 +30,9 @@ export async function getApiClient <T> (
         headers["Authorization"] = `Bearer ${token}` 
     }
 
+    if(!(fetchOptions.body instanceof FormData)){
+        headers["Content-Type"] = "application/json";
+    }
     const response = await fetch(`${API_URL}${endpoint}`,{
         ...fetchOptions, 
         headers
@@ -40,7 +43,7 @@ export async function getApiClient <T> (
             error: "Erro HTTP: " + response.status  
         }))
 
-        throw new Error(error.error || "Erro na requisiçãp");
+        throw new Error(error.error || "Erro na requisição");
     }
 
     return response.json(); 
