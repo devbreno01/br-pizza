@@ -2,6 +2,7 @@
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL; 
 
+console.log("api url" + API_URL)
 
 export function getApiUrl()  {
     return API_URL; 
@@ -15,7 +16,7 @@ interface FetchOptions extends RequestInit{
         tags?: string[]
     }
 }
-export async function getApiClient <T> (
+export async function apiClient <T> (
     endpoint: string, 
     options: FetchOptions ={}
 ): Promise<T>{
