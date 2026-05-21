@@ -17,6 +17,8 @@ export async function registerAction(
         password:password
     }
     console.log("env",  process.env.API_URL)
+
+    console.log(data); 
     await apiClient("/user", {
         method: "POST", 
         body: JSON.stringify(data)
