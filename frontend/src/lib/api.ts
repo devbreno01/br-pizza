@@ -2,8 +2,6 @@
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL; 
 
-console.log("api url" + API_URL)
-
 export function getApiUrl()  {
     return API_URL; 
 }

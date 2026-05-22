@@ -1,12 +1,13 @@
 "use server"; 
 
 import { apiClient } from "@/lib/api";
+import { User } from "@/lib/types";
 
 export async function registerAction(
     prevState: {success: boolean,  error: string} | null, 
     formData: FormData
 ){
-    console.log("cclicouu caralhoooo")
+    
     const email = formData.get("email"); 
     const name = formData.get("name"); 
     const password = formData.get("password"); 
@@ -16,10 +17,8 @@ export async function registerAction(
         email: email, 
         password:password
     }
-    console.log("env",  process.env.API_URL)
-
-    console.log(data); 
-    await apiClient("/user", {
+   
+    await apiClient <User>("/user", {
         method: "POST", 
         body: JSON.stringify(data)
     })
