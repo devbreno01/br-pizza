@@ -18,10 +18,18 @@ export async function registerAction(
         password:password
     }
    
-    await apiClient <User>("/user", {
-        method: "POST", 
-        body: JSON.stringify(data)
-    })
+   try{
+        await apiClient <User>("/user", {
+            method: "POST", 
+            body: JSON.stringify(data)
+        }); 
+        return {success:true, error: "", redirectTo: "/login"};
+   }catch(e){
+    if(e instanceof Error){
+        return {success:false, error: e.message}; 
+    }
+     return {success:false, error: "Erro ao criar conta"}; 
+   }
 
-    return {success:true, error: ""}; 
+   
 }
