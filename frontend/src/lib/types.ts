@@ -6,3 +6,10 @@ export interface User {
     role : "STAFF" | "ADMIN"; 
     createdAt: string
 }
+
+export interface AuthResponse {
+    id: string, 
+    email: string, 
+    password: string, 
+    role: string 
+}

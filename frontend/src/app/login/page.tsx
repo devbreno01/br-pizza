@@ -1,7 +1,11 @@
-
+import { LoginForm } from "@/components/forms/login-form";
 
 export default function Login(){
     return (
-        <h2>teste login</h2>
+        <div className="bg-app-background min-h-screen flex items-center justify-center px-4 px-8">
+            <div className="w-full">
+                <LoginForm/>
+            </div>
+        </div>
     ); 
 }
