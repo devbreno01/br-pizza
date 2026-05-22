@@ -1,6 +1,7 @@
 "use client"; 
 
 import { useActionState } from "react";
+import { useEffect } from "react";
 import {Card , 
         CardHeader, 
         CardDescription, 
@@ -14,9 +15,20 @@ import {Button} from "@/components/ui/button";
 import Link from "next/link"; 
 
 import {registerAction} from "@/actions/auth"; 
+import { useRouter } from "next/navigation";
  
 export function RegisterForm(){
+    const router = useRouter(); 
     const [state, formAction, isPending] = useActionState(registerAction,null )
+
+    
+    useEffect(() => {
+    if (state?.success && state?.redirectTo) {
+        router.push(state.redirectTo)
+    }
+    }, [state]); 
+
+
     return (
         <Card className="bg-app-card border-app-border w-full max-w-md mx-auto">
             <CardHeader>
