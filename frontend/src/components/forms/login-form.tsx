@@ -64,11 +64,19 @@ export function LoginForm(){
                     {isPending ? 'Acessando Conta' : 'Acessar Conta'}
                    </Button>
 
+                    {state?.error && (
+                        <div className="text-sm text-red-500 bg-red-50 p-3 rouded-md">
+                            {state.error}
+                        </div>
+                    )}
+
                    <p className="text-center text-sm text-gray-100">
                         Não tem uma conta? <Link href="/register" className="text-brand-primary text-semibold">Crie uma conta</Link>
                     </p>
                 </form>
             </CardContent>
+
+          
         </Card>
     );
 }

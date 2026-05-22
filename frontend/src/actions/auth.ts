@@ -1,7 +1,8 @@
 "use server"; 
 
 import { apiClient } from "@/lib/api";
-import { User } from "@/lib/types";
+import { AuthResponse } from "@/lib/types";
+import { setToken } from "@/lib/auth";
 
 export async function registerAction(
     prevState: {success: boolean,  error: string} | null, 
@@ -35,7 +36,6 @@ export async function registerAction(
 }
 
 
-
 export async function loginAction(
     prevState: {success: boolean,  error: string} | null, 
     formData: FormData
@@ -50,16 +50,19 @@ export async function loginAction(
     }
    
    try{
-        await apiClient <User>("/session", {
+        const response = await apiClient <AuthResponse>("/session", {
             method: "POST", 
             body: JSON.stringify(data) 
         }); 
-        return {success:true, error: "", redirectTo: "/"};
+        await setToken(response.autenticate.token); 
+        console.log(response);
+        console.log(response.token);
+        return {success:true, error: "", redirectTo: "/dashboard"};
    }catch(e){
-    if(e instanceof Error){
-        return {success:false, error: e.message}; 
-    }
-     return {success:false, error: "Erro ao tentativa de login"}; 
+        if(e instanceof Error){
+            return {success:false, error: e.message}; 
+        }
+        return {success:false, error: "Erro ao tentativa de login"}; 
    }
 
    

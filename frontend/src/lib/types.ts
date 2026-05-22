@@ -8,8 +8,13 @@ export interface User {
 }
 
 export interface AuthResponse {
-    id: string, 
-    email: string, 
-    password: string, 
-    role: string 
+    autenticate?: Authenticate
+}
+
+interface Authenticate {
+  id: string;
+  email: string;
+  password: string;
+  role: string;
+  token: string;
 }
