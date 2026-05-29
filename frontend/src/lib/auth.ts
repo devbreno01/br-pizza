@@ -1,5 +1,6 @@
 import { cookies } from "next/headers";
-
+import { UserInfo} from "@/lib/types"; 
+import { apiClient } from "./api";
 const COOKIE_NAME = "token_users"; 
 
 export async function getToken(): Promise<string | undefined> {
@@ -25,4 +26,20 @@ export async function setToken(token: string){
 export async function removeToken(){
     const cookie = await cookies();
     cookie.delete(COOKIE_NAME); 
+}
+
+export async function getUser(): Promise< UserInfo | null>{
+
+    try{
+        const token = await getToken();
+
+        const user = await apiClient<UserInfo>("/me", {
+            token: token
+        }); 
+
+        return user; 
+    }catch(err){
+        console.log(err);
+        return null; 
+    }
 }

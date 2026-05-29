@@ -7,6 +7,10 @@ export interface User {
     createdAt: string
 }
 
+export interface UserInfo{
+    user: User
+}
+
 export interface AuthResponse {
     autenticate?: Authenticate
 }
