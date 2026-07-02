@@ -14,6 +14,7 @@ interface FetchOptions extends RequestInit{
         tags?: string[]
     }
 }
+
 export async function apiClient <T> (
     endpoint: string, 
     options: FetchOptions ={}
@@ -26,7 +27,8 @@ export async function apiClient <T> (
     const headers: Record<string,string> = {
         ...(fetchOptions.headers as Record<string, string>) 
     }
-
+    
+    
     if(token){
         headers["Authorization"] = `Bearer ${token}` 
     }

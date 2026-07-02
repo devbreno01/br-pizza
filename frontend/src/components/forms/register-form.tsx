@@ -23,9 +23,9 @@ export function RegisterForm(){
 
     
     useEffect(() => {
-    if (state?.success && state?.redirectTo) {
-        router.push(state.redirectTo)
-    }
+        if (state?.success && state?.redirectTo) {
+            router.push(state.redirectTo)
+        }
     }, [state]); 
 
 

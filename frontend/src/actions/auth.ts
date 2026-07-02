@@ -7,7 +7,8 @@ import { setToken } from "@/lib/auth";
 export async function registerAction(
     prevState: {success: boolean,  error: string} | null, 
     formData: FormData
-){
+)
+{
     
     const email = formData.get("email"); 
     const name = formData.get("name"); 
@@ -55,8 +56,7 @@ export async function loginAction(
             body: JSON.stringify(data) 
         }); 
         await setToken(response.autenticate.token); 
-        console.log(response);
-        console.log(response.token);
+        
         return {success:true, error: "", redirectTo: "/dashboard"};
    }catch(e){
         if(e instanceof Error){
