@@ -1,6 +1,9 @@
 import { cookies } from "next/headers";
-import { UserInfo} from "@/lib/types"; 
+import { User, UserInfo} from "@/lib/types"; 
 import { apiClient } from "./api";
+import { Redirect } from "next";
+import { redirect } from "next/navigation";
+
 const COOKIE_NAME = "token_users"; 
 
 export async function getToken(): Promise<string | undefined> {
@@ -42,5 +45,18 @@ export async function getUser(): Promise< UserInfo | null>{
     }catch(err){
         console.log(err);
         return null; 
+    }
+}
+
+export async function getRequiredUser(): Promise<User | null> {
+    const user  = await getUser(); 
+
+    if(!user)
+    {
+         redirect("/register"); 
+    }
+
+    if(user.user.role !== "ADMIN"){
+        redirect("/access-denied"); 
     }
 }
