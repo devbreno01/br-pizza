@@ -48,7 +48,7 @@ export async function getUser(): Promise< UserInfo | null>{
     }
 }
 
-export async function getRequiredUser(): Promise<User | null> {
+export async function getRequiredUser(): Promise<UserInfo | null> {
     const user  = await getUser(); 
 
     if(!user)
@@ -59,4 +59,6 @@ export async function getRequiredUser(): Promise<User | null> {
     if(user.user.role !== "STAFF"){
         redirect("/access-denied"); 
     }
+
+    return user
 }

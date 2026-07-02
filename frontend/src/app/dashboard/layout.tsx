@@ -1,6 +1,6 @@
 import {getRequiredUser} from "@/lib/auth"; 
 import { SideBar } from "@/components/dashboard/SideBar";
-import {} from "lucide-react"; 
+
 
 export default async function DashboardLayout({
     children
@@ -9,9 +9,11 @@ export default async function DashboardLayout({
 }) 
 {
     const user = await getRequiredUser(); 
+    const userInfo = user.user; 
+   
     return (
         <div>
-            <SideBar userName={user?.name}/>
+            <SideBar userName={userInfo.name}/>
             {children}
         </div>
     )
