@@ -1,5 +1,14 @@
+
+
 export default function Products(){
+    console.log("produtossss")
     return (
-        <div>products</div>
+        <div>
+            <h2>
+                PRODUTOOOOOOOOOOOO
+            </h2>
+        
+        </div>
+        
     ); 
 }
