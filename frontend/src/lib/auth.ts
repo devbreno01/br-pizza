@@ -56,7 +56,7 @@ export async function getRequiredUser(): Promise<UserInfo | null> {
          redirect("/register"); 
     }
 
-    if(user.user.role !== "STAFF"){
+    if(user.user.role !== "ADMIN"){
         redirect("/access-denied"); 
     }
 
