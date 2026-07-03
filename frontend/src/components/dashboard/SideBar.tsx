@@ -4,6 +4,10 @@ import {ShoppingCart, Package, Tags } from "lucide-react";
 import Link  from "next/link";
 import {usePathname} from "next/navigation"
 import { cn } from "@/lib/utils";
+import {Button} from "@/components/ui/button"; 
+import { LogOut } from "lucide-react";
+import { logOutAction } from "@/actions/auth";
+
  
 interface SideBarProps {
     userName: string
@@ -44,6 +48,8 @@ export function SideBar({userName} : SideBarProps)
                 {menuItems.map(menu => {
                     const isActive = pathName === menu.href
                     const Icon = menu.icon
+
+
                     return (
                         <Link href={menu.href} key={menu.href} className={cn("flex items-center gap-3 px-3 py-2 text-sm rounded-md font-medium transition-colors duration-300", 
                             isActive ? "bg-brand-primary text-white" : "text-white hover:bg-gray-400"
@@ -53,7 +59,19 @@ export function SideBar({userName} : SideBarProps)
                         </Link>
                     )
                 })}
-            </nav>
+            </nav> 
+
+            <div className="border-t border-app-border">
+                <form action={logOutAction}>
+                    <Button
+                        type="submit"
+                        variant="ghost"
+                        className="w-full justify-start gap-3 text-white hover:text-white hover:bg-transparant">
+                        <LogOut className="w-5 h-5"/>
+                        Sair
+                    </Button>
+                </form>
+            </div>
 
         </aside>
              

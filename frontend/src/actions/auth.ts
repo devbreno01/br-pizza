@@ -2,7 +2,9 @@
 
 import { apiClient } from "@/lib/api";
 import { AuthResponse } from "@/lib/types";
-import { setToken } from "@/lib/auth";
+import { setToken, removeToken} from "@/lib/auth";
+import { redirect } from "next/navigation";
+
 
 export async function registerAction(
     prevState: {success: boolean,  error: string} | null, 
@@ -66,4 +68,11 @@ export async function loginAction(
    }
 
    
+}
+
+
+export async function logOutAction()
+{
+    await removeToken(); 
+    redirect("/login"); 
 }

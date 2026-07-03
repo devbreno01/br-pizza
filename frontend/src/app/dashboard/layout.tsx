@@ -1,6 +1,6 @@
 import {getRequiredUser} from "@/lib/auth"; 
 import { SideBar } from "@/components/dashboard/SideBar";
-
+ 
 
 export default async function DashboardLayout({
     children
