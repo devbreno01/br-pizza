@@ -50,7 +50,8 @@ export async function getUser(): Promise< UserInfo | null>{
 
 export async function getRequiredUser(): Promise<UserInfo | null> {
     const user  = await getUser(); 
-
+  
+   
     if(!user)
     {
          redirect("/register"); 

@@ -4,7 +4,7 @@ import { ApiResponse, Category,  } from "@/lib/types";
 import { Card, CardTitle, CardHeader, CardContent } from "@/components/ui/card";
 import { Tags } from "lucide-react";
 
-
+import { CategoryForm } from "@/components/dashboard/category-form"
 
 export default async function Categories()
 {
@@ -24,7 +24,7 @@ export default async function Categories()
                     <p className="text-sm sm:text-base mt-1">Organize suas categorias</p>
                 </div>
 
-                <button>criar categoria</button>
+                <CategoryForm/>
             </div>
 
 

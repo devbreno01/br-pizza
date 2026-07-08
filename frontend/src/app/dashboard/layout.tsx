@@ -9,6 +9,7 @@ export default async function DashboardLayout({children}: {children: React.React
 {
     const user = await getRequiredUser(); 
     const userInfo = user.user; 
+    
    
     return (
         <div className=" flex h-screen overflow-hidden text-white">
