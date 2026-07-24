@@ -11,7 +11,6 @@ export async function registerAction(
     formData: FormData
 )
 {
-    
     const email = formData.get("email"); 
     const name = formData.get("name"); 
     const password = formData.get("password"); 
@@ -37,7 +36,6 @@ export async function registerAction(
 
    
 }
-
 
 export async function loginAction(
     prevState: {success: boolean,  error: string} | null, 

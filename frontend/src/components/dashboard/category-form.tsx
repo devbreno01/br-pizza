@@ -5,8 +5,9 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Plus } from "lucide-react"
-import { createAction } from "@/actions/category"
 import { useRouter } from "next/navigation";
+import { createAction } from "@/actions/category";
+
 
 import {
     Dialog,
@@ -19,17 +20,29 @@ import {
     DialogTrigger
 } from "@/components/ui/dialog"
 
-export  async function CategoryForm()
+const initialState = {
+  success: false,
+  error: null,
+}
+
+export function CategoryForm()
 {
     const [open, setOpen] = useState(false); 
-    const [state, formAction, isPending] = useActionState(createAction, null);
+    const [state, formAction, isPeding] = useActionState(createAction, initialState); 
+
     const router = useRouter(); 
 
-     useEffect(() => {
-        if (state?.success && state?.redirectTo) {
-            router.push(state.redirectTo)
+    useEffect(()=>{
+        if(state?.success)
+        {
+            setOpen(false)
+        }else {
+            setOpen(false);
         }
-    // }, [state]); 
+            
+    },[state])
+
+     
     return (
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger className="flex flex-row rounded align-center justify-center bg-brand-primary p-2 font-semibold hover:text-white! hover:bg-brand-primary ">
@@ -53,10 +66,13 @@ export  async function CategoryForm()
                     type="submit"
                     variant="ghost"
                     className="w-full bg-brand-primary text-white hover:bg-brand-primary ">
-                    Criar
+                    { isPeding ? 'Salvando' : 'Criar'}
                 </Button>
+
+                {state?.error &&  <p className="text-red-500"> {state.error} </p>}
             </form>
         </DialogContent>
       </Dialog>
     )
+    
 }

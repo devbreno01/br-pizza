@@ -1,3 +1,5 @@
+
+""
 import { getToken } from "@/lib/auth"
 import { apiClient } from "@/lib/api"
 import { ApiResponse, Category,  } from "@/lib/types";
@@ -5,6 +7,7 @@ import { Card, CardTitle, CardHeader, CardContent } from "@/components/ui/card";
 import { Tags } from "lucide-react";
 
 import { CategoryForm } from "@/components/dashboard/category-form"
+
 
 export default async function Categories()
 {
@@ -14,8 +17,7 @@ export default async function Categories()
     })
 
     const categories = response.data 
-    console.log(categories);
-    
+
     return (
         <div className="space-y-4 sm:space-y-6">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">

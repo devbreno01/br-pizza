@@ -23,13 +23,16 @@ export async function createAction(
             method: "POST", 
             token: token, 
             body:JSON.stringify(payload)
-        })
+        });
+        console.log('deu certo'); 
+        return { success :true, error:null}
     }catch(err){
         if(err instanceof Error)
         {
-            return {sucesss: true, error: err.message}
+            console.log(err.message)
+            return {success: true, error: err.message}
         }
 
-        return {sucesss: false, error: "Erro ao criar categoria"}
+        return {success: false, error: "Erro ao criar categoria"}
     }
 }
