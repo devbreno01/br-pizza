@@ -31,6 +31,7 @@ import { apiClient } from "@/lib/api";
 import { ApiResponse, Category } from "@/lib/types";
 import { getToken } from "@/lib/auth";
 import { getCategories } from "@/actions/category";
+import { createAction } from "@/actions/product";
 
 const initialState = {
   success: false,
@@ -42,6 +43,8 @@ export default function ProductForm(){
     const [categories, setCategories] = useState([]); 
     const [categoryId, setCategoryId] = useState(""); 
     const [price, setPrice] = useState('');
+
+    const [state, formAction, isPeding] = useActionState(createAction,initialState)
 
     const handlePriceChange = (e) => {
         const inputValue = e.target.value;
@@ -84,7 +87,7 @@ export default function ProductForm(){
                 <DialogTitle>Novo Produto</DialogTitle>
             </DialogHeader>
 
-            <form className="space-y-6">
+            <form className="space-y-6" action={formAction}>
                 <div className="flex flex-row gap-2 p-2">
                     <div>
                         <Label htmlFor="name" className="mb-2">Nome do Produto</Label>

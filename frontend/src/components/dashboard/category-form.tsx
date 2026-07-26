@@ -33,8 +33,7 @@ export function CategoryForm()
     const router = useRouter(); 
 
     useEffect(()=>{
-        if(state?.success)
-        {
+        if(state?.success){
             setOpen(false)
         }else {
             setOpen(false);
