@@ -1,7 +1,7 @@
 "use server"
 
 import { apiClient } from "@/lib/api"
-import { AuthResponse } from "@/lib/types"
+import { ApiResponse, AuthResponse } from "@/lib/types"
 import { redirect } from "next/navigation";
 import { getToken } from "@/lib/auth"
 import { Category } from "@/lib/types"
@@ -35,4 +35,16 @@ export async function createAction(
 
         return {success: false, error: "Erro ao criar categoria"}
     }
+}
+
+export async function getCategories () : Promise<T>
+{
+    const token = await getToken(); 
+    const response = await apiClient<ApiResponse<Category[]>>("/categories", {
+        token: token!
+    })
+
+    const categories = response.data  
+
+    return categories; 
 }
