@@ -41,7 +41,27 @@ export default function ProductForm(){
     const [open, setOpen]  = useState(false); 
     const [categories, setCategories] = useState([]); 
     const [categoryId, setCategoryId] = useState(""); 
-   
+    const [price, setPrice] = useState('');
+
+    const handlePriceChange = (e) => {
+        const inputValue = e.target.value;
+
+        // Allows only numbers and up to 2 decimal places
+        const regex = /^\d*\.?\d{0,2}$/;
+
+        if (regex.test(inputValue) || inputValue === '') {
+        
+            setPrice(inputValue);
+        }
+    };
+
+    const handlePriceBlur = () => {
+        // Automatically formats to 2 decimal places when clicking away
+        if (price && !isNaN(price)) {
+            setPrice(parseFloat(price).toFixed(2));
+        }
+    };
+
     useEffect(() => {
         getCategories().then((data) => {
             setCategories(data);
@@ -73,8 +93,15 @@ export default function ProductForm(){
                     </div>
                     <div>
                         <Label htmlFor="price" className="mb-2">Preço</Label>
-                        <Input type="number" name="price" id="price" placeholder="Digite o preço do produto" 
-                        className="border-app-border bg-app-background text-white
+                        <Input 
+                            type="text" 
+                            name="price" 
+                            id="price" 
+                            placeholder="0.00" 
+                            value={price} 
+                            onChange={handlePriceChange}  
+                            onBlur={handlePriceBlur}
+                            className="border-app-border bg-app-background text-white
                             [&::-webkit-outer-spin-button]:appearance-none
                             [&::-webkit-inner-spin-button]:appearance-none
                             [-moz-appearance:textfield]
