@@ -4,9 +4,9 @@ import { json } from "zod";
 
 class CreateProductController{
     async handle(req: Request, res: Response){
+        console.log('entenred on controller ')
         const {name, price, description, category_id} = req.body; 
         const createProductService = new CreateProductService(); 
-
         if(!req.file){
             throw new Error("A imagem do produto é obrigatória"); 
         }

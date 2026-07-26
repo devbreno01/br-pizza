@@ -26,7 +26,8 @@ class CreateProductService {
         if(!verifyCategory){
             throw new Error("Categoria não existente"); 
         }
-
+        
+        
         
         let bannerUrl: string = ""; 
         try{
