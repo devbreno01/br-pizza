@@ -1,11 +1,12 @@
 "use client"
 
-import { useState, useActionState, useEffect } from "react";
+import React, { useState, useActionState, useEffect } from "react";
 import { Button } from "@/components/ui/button"; 
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea";
 import { Field , FieldLabel, FieldDescription} from "@/components/ui/field";
+
 import {
   Select,
   SelectContent,
@@ -26,12 +27,13 @@ import {
     DialogTitle,
     DialogTrigger
 } from "@/components/ui/dialog";
-import { Plus } from "lucide-react";
+import { Plus, Upload } from "lucide-react";
 import { apiClient } from "@/lib/api";
 import { ApiResponse, Category } from "@/lib/types";
 import { getToken } from "@/lib/auth";
 import { getCategories } from "@/actions/category";
 import { createAction } from "@/actions/product";
+import Image from "next/image";
 
 const initialState = {
   success: false,
@@ -43,8 +45,12 @@ export default function ProductForm(){
     const [categories, setCategories] = useState([]); 
     const [categoryId, setCategoryId] = useState(""); 
     const [price, setPrice] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
 
-    const [state, formAction, isPeding] = useActionState(createAction,initialState)
+    const [imagePreview, setImagePreview] = useState<string | null>(null);
+    const [imageFile, setImageFile] = useState<File | null>(null);
+
+  
 
     const handlePriceChange = (e) => {
         const inputValue = e.target.value;
@@ -65,6 +71,8 @@ export default function ProductForm(){
         }
     };
 
+    
+
     useEffect(() => {
         getCategories().then((data) => {
             setCategories(data);
@@ -75,6 +83,61 @@ export default function ProductForm(){
         value: category.id,
         label: category.name,
     }));
+
+    function convertBrlToCents(value: string):number
+    {
+       const cleanValue = value.replace(/\./g,"");
+       const reais =  parseFloat(cleanValue);
+       return Math.round(reais * 100);
+    }
+
+    async function handleCreateProduct(e: React.SubmitEvent<HTMLFormElement>)
+    {
+        e.preventDefault(); 
+        setIsLoading(true); 
+        
+        const formElement = e.currentTarget; 
+        const name = (formElement.elements.namedItem('name') as HTMLInputElement).value;
+        const price = (formElement.elements.namedItem('price') as HTMLInputElement).value;
+        const priceInCents = convertBrlToCents(price);
+        const description = (formElement.elements.namedItem('description') as HTMLInputElement).value;
+        const category_id= (formElement.elements.namedItem('category_id') as HTMLInputElement).value;
+        const file = (formElement.elements.namedItem('file') as HTMLInputElement);
+
+
+        const formData = new FormData(e.currentTarget); 
+        formData.append('name', name); 
+        formData.append('price', priceInCents.toString()); 
+        formData.append('description', description); 
+        formData.append('category_id', category_id); 
+        formData.append('file',imageFile); 
+
+
+    }
+
+    function handleImageChange(e: React.ChangeEvent<HTMLInputElement>) {
+        const file = e.target.files?.[0];
+        console.log('target files',  e.target.files?.[0]);
+        if (file) {
+            if (file.size > 5 * 1024 * 1024) {
+                return;
+            }
+
+            setImageFile(file);
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setImagePreview(reader.result as string);
+            };
+
+            reader.readAsDataURL(file);
+        }
+    }
+
+     function clearImage() {
+        setImageFile(null);
+        setImagePreview(null);
+    }
+
     return (
         <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger className="flex flex-row rounded align-center justify-center bg-brand-primary p-2 font-semibold hover:text-white! hover:bg-brand-primary ">
@@ -87,7 +150,7 @@ export default function ProductForm(){
                 <DialogTitle>Novo Produto</DialogTitle>
             </DialogHeader>
 
-            <form className="space-y-6" action={formAction}>
+            <form className="space-y-6" >
                 <div className="flex flex-row gap-2 p-2">
                     <div>
                         <Label htmlFor="name" className="mb-2">Nome do Produto</Label>
@@ -142,25 +205,54 @@ export default function ProductForm(){
                 </div>
 
 
-                <div>
+                 <div className="space-y-2">
+                    <Label htmlFor="file" className="mb-2">
+                        Imagem do produto
+                    </Label>
+                    {imagePreview ? (
+                        <div className="relative w-full h-48 border rounded-lg overflow-hidden">
+                            <Image
+                            src={imagePreview}
+                            alt="preview da imagem"
+                            fill
+                            className="object-cover z-10"
+                            />
 
-                    <Field>
-                        <FieldLabel htmlFor="file" className="mb-2">Imagem do Produto</FieldLabel>
-                        <Input id="file" name="file" type="file" className="border-app-border  bg-app-background text-white! rounded-[10px] h-20" />
-                    </Field>
-                </div>
-
-
-
+                            <Button
+                            type="button"
+                            variant="destructive"
+                            onClick={clearImage}
+                            className="absolute top-2 right-2 z-20"
+                            >
+                            Excluir
+                            </Button>
+                        </div>
+                    ) : (
+                        <div className="border-2 border-dashed rounded-md p-8 flex flex-col items-center justify-center">
+                            <Upload className="h-8 w-8 mx-auto text-gray-400 mb-2" />
+                            <Label htmlFor="file">Clique para selecionar uma imagem</Label>
+                            <Input
+                                id="file"
+                                name="file"
+                                type="file"
+                                accept="image/jpeg,image/jpg,image/png"
+                                onChange={handleImageChange}
+                                required
+                                className="hidden"
+                            />
+                        </div>
+                    )}
+          </div>
                 <Button
                     type="submit"
                     variant="ghost"
                     className="w-full bg-brand-primary text-white hover:bg-brand-primary ">
+                    
                     {/* { isPeding ? 'Salvando' : 'Criar'} */}
                     Criar
                 </Button>
 
-                {state?.error &&  <p className="text-red-500"> {state.error} </p>}
+             
             </form>
         </DialogContent>
       </Dialog>
