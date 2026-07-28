@@ -34,6 +34,8 @@ import { getToken } from "@/lib/auth";
 import { getCategories } from "@/actions/category";
 import { createAction } from "@/actions/product";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+
 
 const initialState = {
   success: false,
@@ -41,6 +43,7 @@ const initialState = {
 }
 
 export default function ProductForm(){
+    const router = useRouter();
     const [open, setOpen]  = useState(false); 
     const [categories, setCategories] = useState([]); 
     const [categoryId, setCategoryId] = useState(""); 
@@ -102,16 +105,29 @@ export default function ProductForm(){
         const priceInCents = convertBrlToCents(price);
         const description = (formElement.elements.namedItem('description') as HTMLInputElement).value;
         const category_id= (formElement.elements.namedItem('category_id') as HTMLInputElement).value;
-        const file = (formElement.elements.namedItem('file') as HTMLInputElement);
+    
 
 
-        const formData = new FormData(e.currentTarget); 
+        const formData = new FormData(); 
         formData.append('name', name); 
         formData.append('price', priceInCents.toString()); 
         formData.append('description', description); 
         formData.append('category_id', category_id); 
         formData.append('file',imageFile); 
 
+        const result = await createAction(formData)
+        
+        console.log(result); 
+        if(result.success)
+        {
+            console.log('atributo true')
+            /*
+            setOpen(false);
+            router.refresh(); 
+            return; */
+        }else {
+            alert(result.error)
+        }
 
     }
 
