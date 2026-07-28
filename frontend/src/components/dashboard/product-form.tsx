@@ -98,37 +98,39 @@ export default function ProductForm(){
     {
         e.preventDefault(); 
         setIsLoading(true); 
-        
+       
         const formElement = e.currentTarget; 
-        const name = (formElement.elements.namedItem('name') as HTMLInputElement).value;
-        const price = (formElement.elements.namedItem('price') as HTMLInputElement).value;
+      
+        const name = formElement.name.value;
+        const price = formElement.price.value; 
         const priceInCents = convertBrlToCents(price);
-        const description = (formElement.elements.namedItem('description') as HTMLInputElement).value;
-        const category_id= (formElement.elements.namedItem('category_id') as HTMLInputElement).value;
+        const description = formElement.description.value; 
+      
     
-
 
         const formData = new FormData(); 
         formData.append('name', name); 
         formData.append('price', priceInCents.toString()); 
         formData.append('description', description); 
-        formData.append('category_id', category_id); 
-        formData.append('file',imageFile); 
+        formData.append('category_id', categoryId); 
+        if(imageFile)
+            formData.append('file',imageFile); 
 
+        
         const result = await createAction(formData)
         
         console.log(result); 
         if(result.success)
         {
             console.log('atributo true')
-            /*
+            
             setOpen(false);
             router.refresh(); 
-            return; */
+            return; 
         }else {
             alert(result.error)
         }
-
+        
     }
 
     function handleImageChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -166,7 +168,7 @@ export default function ProductForm(){
                 <DialogTitle>Novo Produto</DialogTitle>
             </DialogHeader>
 
-            <form className="space-y-6" >
+            <form className="space-y-6" onSubmit={handleCreateProduct} >
                 <div className="flex flex-row gap-2 p-2">
                     <div>
                         <Label htmlFor="name" className="mb-2">Nome do Produto</Label>
@@ -263,8 +265,6 @@ export default function ProductForm(){
                     type="submit"
                     variant="ghost"
                     className="w-full bg-brand-primary text-white hover:bg-brand-primary ">
-                    
-                    {/* { isPeding ? 'Salvando' : 'Criar'} */}
                     Criar
                 </Button>
 

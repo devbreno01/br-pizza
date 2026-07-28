@@ -10,11 +10,13 @@ export async function createAction(
     console.log('bateu aqui'); 
     try{
         console.log('create product action')
-        await apiClient("/products",{
+        const response = await apiClient("/products",{
             method: "POST", 
             token: token, 
             body: formData 
         });
+
+        console.log(response);
 
         return { success :true, error:null}
     }catch(e){
@@ -24,7 +26,7 @@ export async function createAction(
             return {success: false , error: e.message}
         }
 
-        console.log(e.message);
+      
 
         return {success: false, error: "Erro ao criar produto"}
     }
