@@ -19,7 +19,7 @@ class CreateProductController{
             imageBuffer: req.file.buffer, 
             imageName: req.file.originalname
         });
-
+ 
         return res.json({
             message:"success", 
             data: createProduct

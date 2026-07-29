@@ -10,6 +10,7 @@ class ListCategoryService{
                     name: true, 
                     createdAt: true
                 }
+              
             })
 
             return categories; 

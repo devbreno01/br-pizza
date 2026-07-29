@@ -16,12 +16,19 @@ class ListProductService {
                 },
 
                 select:{
+                    id:true,
                     name: true, 
                     price: true, 
                     description: true, 
                     banner: true,
-                    category_id: true
-                }
+                    category_id: true,
+                    
+                    category:{
+                        select:{
+                            name: true
+                        }
+                    }
+                },  
             });
         
             return products;             
