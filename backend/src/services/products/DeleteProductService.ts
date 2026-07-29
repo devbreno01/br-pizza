@@ -8,14 +8,8 @@ class DeleteProductService{
     async execute({id: id}: deleteProductProps){
         
         try{
-            const deleteProduct = await prismaClient.product.update({
-                data:{
-                    disabled: true
-                },
-                where:{id: id},
-                select:{
-                    disabled:true
-                }
+           await prismaClient.product.delete({
+                where:{id: id}
             })
 
             return {message: "Produto deletado com sucesso"}; 

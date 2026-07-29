@@ -4,12 +4,16 @@ import { Trash } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle} from "@/components/ui/dialog";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import deleteProductAction from "@/actions/product";
+import { useRouter } from "next/navigation";
+
 interface DeleteButtonProps {
    product_id: string
 }
 
 export function DeleteProductConfirmModal({product_id}: DeleteButtonProps)
-{
+{   
+    const router = useRouter(); 
     const [open,setOpen] = useState(false); 
     function handleConfirmDelete(e)
     {
@@ -17,8 +21,18 @@ export function DeleteProductConfirmModal({product_id}: DeleteButtonProps)
         setOpen(true);
     }
     //need to implement this function 
-    async function deleteProduct(e){
-        e.preventDefault(); 
+    async function deleteProduct(){
+        
+        const result = await deleteProductAction(product_id); 
+        console.log('chamou delete product action')
+        // if(result.success)
+        // { 
+        //     setOpen(false);
+        //     router.refresh(); 
+        //     return; 
+        // }else {
+        //     alert(result.error)
+        // }
     }
 
     function handleCloseModal(e)
@@ -43,8 +57,8 @@ export function DeleteProductConfirmModal({product_id}: DeleteButtonProps)
                         <DialogTitle>Deseja realmente excluir o produto? </DialogTitle>
                     </DialogHeader>
 
-                    <form className="flex flex-row gap-2">
-                        <Button onSubmit={deleteProduct} className="bg-red-600 text-white ">Sim</Button>
+                    <form action={deleteProduct} className="flex flex-row gap-2">
+                        <Button type="submit" className="bg-red-600 text-white ">Sim</Button>
                         <Button onClick={handleCloseModal}>Não</Button>
                     </form>
                 </DialogContent>
