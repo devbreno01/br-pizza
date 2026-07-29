@@ -14,13 +14,12 @@ export default async function Products(){
     const response = await apiClient<ApiResponse<Product[]>>("/products",{
         token: token
     });
-    const products = response.data.list 
-    
-    function handleOnDelete()
-    {
-        console.log('hello world')
-    }
-  
+    const products = response.data.list; 
+
+    //next steps:
+    //mask for price 
+    //option to show a image as a bigger resolution, like a modal
+
     return (
         <div className="space-y-4 sm:space-y-6">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">

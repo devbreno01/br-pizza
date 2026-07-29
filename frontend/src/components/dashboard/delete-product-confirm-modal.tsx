@@ -16,7 +16,7 @@ export function DeleteProductConfirmModal({product_id}: DeleteButtonProps)
         e.preventDefault(); 
         setOpen(true);
     }
-
+    //need to implement this function 
     async function deleteProduct(e){
         e.preventDefault(); 
     }
@@ -26,7 +26,7 @@ export function DeleteProductConfirmModal({product_id}: DeleteButtonProps)
         e.preventDefault(); 
         setOpen(false); 
     }
-
+    
     return (
         <div className="space-y-4">
               <button 
