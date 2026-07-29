@@ -27,6 +27,7 @@ const initialState = {
 
 export function CategoryForm()
 {
+    
     const [open, setOpen] = useState(false); 
     const [state, formAction, isPeding] = useActionState(createAction, initialState); 
 
@@ -35,6 +36,7 @@ export function CategoryForm()
     useEffect(()=>{
         if(state?.success){
             setOpen(false)
+            router.refresh(); 
         }else {
             setOpen(false);
         }
