@@ -29,6 +29,8 @@ export interface Category{
     createdAt: string 
 }
 
+
+
 export interface ApiResponse<T> {
   message: string;
   data: T;
@@ -44,4 +46,12 @@ export interface Product {
     category?: {
         name: string
     }
+}
+
+export interface Order {
+    id : string, 
+    table: number
+    draf: boolean, 
+    status: boolean, 
+    name?: string
 }
