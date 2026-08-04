@@ -1,6 +1,6 @@
 
 import { Request, Response } from "express";
-import { ListOrdersService } from "../../services/order/ListOrdersService";
+import { ListDetailOrderService } from "../../services/order/ListDetailOrderService";
 
 class ListOrdersController {
      async handle(req: Request, res: Response){
@@ -13,7 +13,7 @@ class ListOrdersController {
         } else if (draft === "false") {
             isDraft = false;
         }
-        const listOrdersService = new ListOrdersService();
+        const listOrdersService = new ListDetailOrderService();
 
 
         const listOrders = await  listOrdersService.execute(isDraft);

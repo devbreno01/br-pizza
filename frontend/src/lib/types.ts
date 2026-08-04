@@ -51,7 +51,7 @@ export interface Product {
 export interface Order {
     id : string, 
     table: number
-    draf: boolean, 
+    draft: boolean, 
     status: boolean, 
     name?: string
 }

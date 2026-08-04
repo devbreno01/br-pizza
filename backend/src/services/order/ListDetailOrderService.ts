@@ -10,6 +10,7 @@ class ListDetailOrderService{
                     ...(draft !== undefined && { draft })
                 }, 
                 select:{
+                    id:true, 
                     table: true, 
                     status: true, 
                     draft: true, 
