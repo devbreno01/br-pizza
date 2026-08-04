@@ -3,9 +3,10 @@
 import { apiClient } from "@/lib/api";
 import { ApiResponse, Order } from "@/lib/types";
 import { Card, CardHeader , CardTitle , CardContent} from "@/components/ui/card";
+import { Badge } from  "@/components/ui/badge";
 import { Tags } from "lucide-react";
 import { useEffect, useState } from "react";
-import { Badge } from "lucide-react";
+
 import Error from "next/error";
 
 interface OrdersProps{
@@ -47,29 +48,33 @@ export  function Orders({token}: OrdersProps){
     return (
          <div>
              {orders.length !==0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    {orders.map(order =>{
+                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
 
+                    {orders.map(order =>{
                         return (
                             <Card
                                 key={order.id}
-                                className="bg-app-card border-app-border text-white transition-shadow hover:shadow-md w-120 h-100"
+                                className="bg-app-card border-app-border text-white"
                             >
                                 <CardHeader>
-                                    <CardTitle className="flex items-center gap-2 text-base md:text-lg border">
-                                        <span>MESA {order.table}</span>
-                                        <span>Cliente: {order.name}</span>
-
-                                        <div className="flex justify-end ml-24">
-                                            <div className="flex justify-center  align-middle bg-app-border roudend-xl border">
-                                                <span className="text-white">Em produção</span>
-                                            </div>
-                                        </div>
-                                    </CardTitle>
+                                    <div className="flex items-center justify-between gap-2">
+                                        <CardTitle className="text-lg lg:text-xl font-bold">Mesa {order.table}</CardTitle>
+                                        <Badge variant="secondary" className="text-xs select-none">produção</Badge>
+                                    </div>
                                 </CardHeader>
 
-                                <CardContent>
-                                    <p className="text-gray-200 text-sm">{order.id}</p>
+                                <CardContent className="space-y-3 sm:space-y-4 mt-auto">
+                                    <div>
+                                        {order.items && order.items.length > 0 &&(
+                                           <div className="space-y-1">
+                                                {order.items.slice(0,2).map(item =>(
+                                                    <p key={item.id} className="text-xs sm:text-sm text-gray-300 truncate">
+                                                        {item.amount} x {item.product.name}
+                                                    </p>
+                                                ))}
+                                           </div>     
+                                        )}
+                                    </div>
                                 </CardContent>
                             </Card>
                          );
