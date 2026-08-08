@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 
 import Error from "next/error";
 import { formatPrice } from "@/lib/utils"
+import OrdersDialog from "./orders-dialog";
 
 interface OrdersProps{
     token: string
@@ -90,10 +91,8 @@ export  function Orders({token}: OrdersProps){
                                             <p className="text-sm text-gray-400 md:text-base">Total</p>
                                             <p className="text-base font-bold text-brand-primary">{ formatPrice(calcTotalOfOrder(order)) }</p>
                                         </div>
-                                        <Button size="sm" className="bg-brand-primary hover:bg-brand-primary w-full lg:w-auto"> 
-                                            <EyeIcon className="w-5 h-5"/>
-                                            Detalhes 
-                                        </Button>
+                                       
+                                       <OrdersDialog orderId={order.id} token={token}/>
                                         
                                     </div>
                                 </CardContent>

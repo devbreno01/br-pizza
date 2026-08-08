@@ -20,6 +20,7 @@ class ListOrdersItemService {
                     table: true, 
                     draft: true, 
                     status: true, 
+                    name: true, 
                     createdAt: true, 
                     itens:{
                         select:{
