@@ -14,7 +14,22 @@ class ListDetailOrderService{
                     table: true, 
                     status: true, 
                     draft: true, 
-                    name: true 
+                    name: true,
+                    itens:{
+                        select:{
+                            id: true, 
+                            amount:true, 
+                            product: {
+                                select:{
+                                    name: true, 
+                                    price: true, 
+                                    description: true, 
+                                    banner: true, 
+                                    disabled: true
+                                }
+                            }
+                        }
+                    }
                 }
             })
 

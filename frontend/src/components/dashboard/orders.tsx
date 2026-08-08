@@ -20,7 +20,6 @@ export  function Orders({token}: OrdersProps){
         async function loadOrders(){
             
             try{
-                
                 const response = await apiClient<ApiResponse<Order[]>>("/orders?draft=false",{
                     method: "GET",
                     token: token 
@@ -37,7 +36,7 @@ export  function Orders({token}: OrdersProps){
             }
         
         }
-        
+
         loadOrders(); 
     }, [])
 
@@ -65,9 +64,9 @@ export  function Orders({token}: OrdersProps){
 
                                 <CardContent className="space-y-3 sm:space-y-4 mt-auto">
                                     <div>
-                                        {order.items && order.items.length > 0 &&(
+                                        {order.itens && order.itens.length > 0 &&(
                                            <div className="space-y-1">
-                                                {order.items.slice(0,2).map(item =>(
+                                                {order.itens.slice(0,2).map(item =>(
                                                     <p key={item.id} className="text-xs sm:text-sm text-gray-300 truncate">
                                                         {item.amount} x {item.product.name}
                                                     </p>
