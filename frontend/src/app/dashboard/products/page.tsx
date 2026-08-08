@@ -8,6 +8,7 @@ import { apiClient } from "@/lib/api";
 import { getToken } from "@/lib/auth";
 import { ApiResponse, Product } from "@/lib/types";
 import Categories from "../categories/page";
+import { formatPrice } from "@/lib/utils";
 export default async function Products(){
     const token = await getToken(); 
     
@@ -55,7 +56,7 @@ export default async function Products(){
                                                 <img src={product.banner} alt="" className="h-14 w-14" />
                                             </TableCell>
                                             <TableCell>{product.name}</TableCell>
-                                            <TableCell>{product.price}</TableCell>
+                                            <TableCell>{ formatPrice(product.price) }</TableCell>
                                             <TableCell className="text-right">{product.category?.name}</TableCell>
                                             <TableCell className="text-right">{product.description}</TableCell>
                                            <TableCell className="flex items-center justify-end gap-2 text-right">

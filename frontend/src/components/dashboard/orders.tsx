@@ -3,11 +3,13 @@
 import { apiClient } from "@/lib/api";
 import { ApiResponse, Order } from "@/lib/types";
 import { Card, CardHeader , CardTitle , CardContent} from "@/components/ui/card";
+import { Button } from "@/components/ui/button"
 import { Badge } from  "@/components/ui/badge";
 import { Tags } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import Error from "next/error";
+import { formatPrice } from "@/lib/utils"
 
 interface OrdersProps{
     token: string
@@ -39,10 +41,17 @@ export  function Orders({token}: OrdersProps){
 
         loadOrders(); 
     }, [])
+    
+    const calcTotalOfOrder = (order) => {
+        if(!order.itens) return 0; 
+
+        return order.itens.reduce((total, item)=> {
+            return total + item.product.price * item.amount
+        }, 0); 
+    }
 
 
-
-  if (loading) return <p>Loading...</p>;
+    if (loading) return <p>Loading...</p>;
 
     return (
          <div>
@@ -73,6 +82,15 @@ export  function Orders({token}: OrdersProps){
                                                 ))}
                                            </div>     
                                         )}
+                                    </div>
+
+                                    <div className="flex flex-col xl-flex-row items-center justify-between pt-4 border-t border-app-border">
+                                        <div className="self-start">
+                                            <p className="text-sm text-gray-400 md:text-base">Total</p>
+                                            <p className="text-base font-bold text-brand-primary">{ formatPrice(calcTotalOfOrder(order)) }</p>
+                                        </div>
+                                        <Button> Detalhes </Button>
+                                        
                                     </div>
                                 </CardContent>
                             </Card>
