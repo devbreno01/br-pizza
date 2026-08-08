@@ -64,6 +64,39 @@ export default function OrdersDialog({ orderId,token }:OrderDialogProps  ){
         setOpen(false)
     }
 
+    const finishOrder = async () => {
+      
+        setLoading(true); 
+           
+        const formElement = e.currentTarget; 
+        
+        const name = order?.name || 'Sem nome';   
+        const order_id = orderId;
+
+        if(!order_id){
+            return; 
+        }
+
+        const formData = new FormData(); 
+        formData.append('order_id', order_id); 
+        formData.append('name', name); 
+
+
+       try{
+            const response = await apiClient("/order/finish",{
+                method: "POST", 
+                token: token, 
+                body: formData 
+            });
+
+            console.log(response);
+            setOpen(false)
+       }catch(e){
+            console.log(e)
+       }
+    } 
+
+
     useEffect(()=>{
         if(open){
              fetchOrder();
@@ -181,6 +214,7 @@ export default function OrdersDialog({ orderId,token }:OrderDialogProps  ){
                     <Button
                         className="flex-1 bg-brand-primary hover:bg-brand-primary/90 text-white font-semibold"
                         disabled={loading}
+                        onClick={finishOrder}
                     >
                         Finalizar pedido
                     </Button>
