@@ -5,7 +5,7 @@ import { ApiResponse, Order } from "@/lib/types";
 import { Card, CardHeader , CardTitle , CardContent} from "@/components/ui/card";
 import { Button } from "@/components/ui/button"
 import { Badge } from  "@/components/ui/badge";
-import { Tags } from "lucide-react";
+import { Tags, EyeIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import Error from "next/error";
@@ -26,10 +26,11 @@ export  function Orders({token}: OrdersProps){
                     method: "GET",
                     token: token 
                 }); 
-                console.log(response)
+              
                 if(response)
                 {
-                    setOrders(response.listOrders)
+                    let pendingOrders = response.listOrders.filter(order => !order.status)
+                    setOrders(pendingOrders)
                     setLoading(false); 
                 }
 
@@ -51,7 +52,7 @@ export  function Orders({token}: OrdersProps){
     }
 
 
-    if (loading) return <p>Loading...</p>;
+    if (loading) return <p className="text-center text-gray-300">Loading...</p>;
 
     return (
          <div>
@@ -67,7 +68,7 @@ export  function Orders({token}: OrdersProps){
                                 <CardHeader>
                                     <div className="flex items-center justify-between gap-2">
                                         <CardTitle className="text-lg lg:text-xl font-bold">Mesa {order.table}</CardTitle>
-                                        <Badge variant="secondary" className="text-xs select-none">produção</Badge>
+                                        <Badge variant="secondary" className="text-xs select-none">PRODUÇÃO</Badge>
                                     </div>
                                 </CardHeader>
 
@@ -84,12 +85,15 @@ export  function Orders({token}: OrdersProps){
                                         )}
                                     </div>
 
-                                    <div className="flex flex-col xl-flex-row items-center justify-between pt-4 border-t border-app-border">
+                                    <div className="flex flex-col xl:flex-row items-center justify-between pt-4 border-t border-app-border gap-3">
                                         <div className="self-start">
                                             <p className="text-sm text-gray-400 md:text-base">Total</p>
                                             <p className="text-base font-bold text-brand-primary">{ formatPrice(calcTotalOfOrder(order)) }</p>
                                         </div>
-                                        <Button> Detalhes </Button>
+                                        <Button size="sm" className="bg-brand-primary hover:bg-brand-primary w-full lg:w-auto"> 
+                                            <EyeIcon className="w-5 h-5"/>
+                                            Detalhes 
+                                        </Button>
                                         
                                     </div>
                                 </CardContent>
@@ -99,7 +103,7 @@ export  function Orders({token}: OrdersProps){
 
                     })}
                 </div>
-            ): ( <p>Sem dados</p>) }
+            ): ( <p className="text-center text-gray-300">Nenhum pedido encontrado</p>) }
          </div>
         
     )

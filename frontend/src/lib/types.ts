@@ -34,6 +34,7 @@ export interface Category{
 export interface ApiResponse<T> {
   message: string;
   data: T;
+  listOrders?: T; 
 }
 
 export interface Product {
@@ -54,4 +55,5 @@ export interface Order {
     draft: boolean, 
     status: boolean, 
     name?: string
+    itens?: any
 }
