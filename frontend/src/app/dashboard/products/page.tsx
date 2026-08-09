@@ -11,14 +11,28 @@ import { getToken } from "@/lib/auth";
 import { ApiResponse, Product } from "@/lib/types";
 import Categories from "../categories/page";
 import { formatPrice } from "@/lib/utils";
-export default async function Products(){
+
+
+interface Props {
+    searchParams: Promise<{ page?:string , limit?: string}>
+}
+
+async function getProducts(page:number, limit:number){
     const token = await getToken(); 
-    
-    const response = await apiClient<ApiResponse<Product[]>>("/products",{
+    const res = await apiClient<ApiResponse<Product[]>>("/products",{
         token: token
     });
-    const products = response.data.list; 
+    return res; 
+}
 
+export default async function Products({searchParams}: Props){
+    const params = await searchParams;
+    const page = Number(params.page) || 1;
+    const limit = Number(params.limit) || 10;
+
+    const { data , totalPages} = await getProducts(page, limit)
+    const products = data.list; 
+    
     //next steps:
     //mask for price 
     //option to show a image as a bigger resolution, like a modal
@@ -73,6 +87,8 @@ export default async function Products(){
                     </CardContent>
                 </Card>
             </div>
+
+            <PaginationControl currentPage={page} totalPages={totalPages} />
         </div>
         
         
