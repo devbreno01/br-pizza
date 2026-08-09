@@ -17,7 +17,6 @@ interface PaginationProps {
 }
 
 
-
 export function PaginationControl({currentPage, totalPages}: PaginationProps){
     const router = useRouter(); 
     const pathName = usePathname();

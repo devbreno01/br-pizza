@@ -19,7 +19,7 @@ interface Props {
 
 async function getProducts(page:number, limit:number){
     const token = await getToken(); 
-    const res = await apiClient<ApiResponse<Product[]>>("/products",{
+    const res = await apiClient<ApiResponse<Product[]>>(`/products?page=${page}&limit=${limit}`,{
         token: token
     });
     return res; 
@@ -28,15 +28,13 @@ async function getProducts(page:number, limit:number){
 export default async function Products({searchParams}: Props){
     const params = await searchParams;
     const page = Number(params.page) || 1;
-    const limit = Number(params.limit) || 10;
+    const limit = Number(params.limit) || 6;
 
     const { data , totalPages} = await getProducts(page, limit)
     const products = data.list; 
+    console.log('here')
+    console.log(searchParams)
     
-    //next steps:
-    //mask for price 
-    //option to show a image as a bigger resolution, like a modal
-
     return (
         <div className="space-y-4 sm:space-y-6">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
