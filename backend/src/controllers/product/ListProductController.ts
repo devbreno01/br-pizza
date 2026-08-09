@@ -1,5 +1,6 @@
 import { ListProductService } from "../../services/products/ListProductService";
 import { Request, Response, NextFunction } from "express";
+import { parsePageQuery } from "../../utils/utils";
 class ListProductController {
     async handle(req: Request, res:Response ){
         const listProductService = new ListProductService();
@@ -10,9 +11,9 @@ class ListProductController {
                         ? false
                         : undefined;
 
-        const pageNumber = req.query.page
-        const page = req.query.page > 1 ? req.query.page : 1
-        const limit = 10
+
+        const page = parsePageQuery(req.body.page); 
+        const limit = parse;
 
         const list = await listProductService.execute({disabled: disabled,
                                                         limit: limit, 
