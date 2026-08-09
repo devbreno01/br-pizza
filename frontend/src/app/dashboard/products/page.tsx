@@ -4,6 +4,8 @@ import { DeleteProductConfirmModal } from "@/components/dashboard/delete-product
 import { Card, CardContent , CardHeader, CardTitle} from "@/components/ui/card"; 
 import {Table, TableHeader , TableRow ,TableHead, TableBody, TableCell} from "@/components/ui/table";
 
+import { PaginationControl } from "@/components/dashboard/pagination-control"; 
+
 import { apiClient } from "@/lib/api";
 import { getToken } from "@/lib/auth";
 import { ApiResponse, Product } from "@/lib/types";
