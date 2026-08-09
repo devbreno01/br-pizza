@@ -17,6 +17,7 @@ import { ApiResponse, Order } from "@/lib/types";
 import { apiClient } from "@/lib/api";
 import { formatPrice } from "@/lib/utils";
 
+
 interface OrderDialogProps {
     orderId: string | null;
     token: string;
@@ -25,6 +26,7 @@ export default function OrdersDialog({ orderId,token }:OrderDialogProps  ){
     const [open, setOpen ]  = useState(false); 
     const [loading,setLoading] = useState(false); 
     const [order, setOrder] = useState<Order | null>(null);
+    const router = useRouter(); 
 
     const fetchOrder = async () =>{
         if (!orderId) {
@@ -46,7 +48,6 @@ export default function OrdersDialog({ orderId,token }:OrderDialogProps  ){
             setOrder(response)
             setLoading(false)
             
-
         }catch(e){
             console.log(e)
         }
@@ -77,19 +78,18 @@ export default function OrdersDialog({ orderId,token }:OrderDialogProps  ){
             return; 
         }
 
-        const formData = new FormData(); 
-        formData.append('order_id', order_id); 
-        formData.append('name', name); 
-
+        const payload = {
+            name: name, 
+            order_id: orderId
+        }
 
        try{
             const response = await apiClient("/order/finish",{
-                method: "POST", 
+                method: "PUT", 
                 token: token, 
-                body: formData 
+                body:JSON.stringify(payload)
             });
 
-            console.log(response);
             setOpen(false)
        }catch(e){
             console.log(e)
