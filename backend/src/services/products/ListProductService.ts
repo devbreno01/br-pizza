@@ -1,14 +1,17 @@
 import prismaClient from "../../prisma"
 
 interface listCategoryProps{
-    disabled: boolean | undefined
+    disabled: boolean | undefined,
+    limit: number, 
+    page: number
 }
 
 class ListProductService {
     
 
-    async execute({disabled}: listCategoryProps) {
+    async execute({disabled, limit, page}: listCategoryProps) {
         try{
+            const offset =  (page -1 ) * limit; 
             const products = prismaClient.product.findMany({
             
                 where:{
@@ -29,6 +32,10 @@ class ListProductService {
                         }
                     }
                 },  
+                
+                skip: offset, 
+                take: limit
+               
             });
         
             return products;             
@@ -36,6 +43,12 @@ class ListProductService {
               throw new Error("Falha ao tentar fazer listagem de produtos");
         }
     }
+
+    async getCountOfProducts(){
+        const total = prismaClient.product.count(); 
+        return total; 
+    }
+
 }
 
 export {ListProductService}

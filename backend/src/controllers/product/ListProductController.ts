@@ -10,8 +10,17 @@ class ListProductController {
                         ? false
                         : undefined;
 
+        const pageNumber = req.query.page
+        const page = req.query.page > 1 ? req.query.page : 1
+        const limit = 10
 
-        const list = await listProductService.execute({disabled: disabled}); 
+        const list = await listProductService.execute({disabled: disabled,
+                                                        limit: limit, 
+                                                        page: page}); 
+
+        
+        const total = listProductService.getCountOfProducts(); 
+        let totalPages = total/limit; 
 
         return res.json({
             message: "List of products", 
