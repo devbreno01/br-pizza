@@ -34,7 +34,10 @@ class ListProductService {
                 },  
                 
                 skip: offset, 
-                take: limit
+                take: limit, 
+                orderBy: {
+                    name: "asc"
+                }
                
             });
         
@@ -45,7 +48,7 @@ class ListProductService {
     }
 
     async getCountOfProducts(){
-        const total = prismaClient.product.count(); 
+        const total = await prismaClient.product.count(); 
         return total; 
     }
 
