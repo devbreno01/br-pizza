@@ -21,7 +21,7 @@ class ListProductController {
 
         
         const total = await listProductService.getCountOfProducts(); 
-        let totalPages = total/limit; 
+        let totalPages = Math.ceil(total/limit); 
 
         return res.json({
             message: "List of products", 
