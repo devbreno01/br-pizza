@@ -1,10 +1,5 @@
-import { Payload } from "@prisma/client/runtime/client";
 import { Request, Response, NextFunction } from "express";
 import { verify } from "jsonwebtoken"; 
-
-interface payload{
-    sub: string
-}
 
 export function isAuthenticated(req: Request, res: Response, next: NextFunction){
     
@@ -23,11 +18,14 @@ export function isAuthenticated(req: Request, res: Response, next: NextFunction)
         });
     }
     try{
-        const { sub } = verify(token, process.env.JWT_SECRET as string) as payload;
+        const payload = verify(token, process.env.JWT_SECRET as string);
+        if (typeof payload === "string" || typeof payload.sub !== "string" || !payload.sub) {
+            return res.status(401).json({ error: "Token inválido" });
+        }
 
         //inserting user_id into the body of the requisition 
 
-        req.user_id = sub;
+        req.user_id = payload.sub;
        
     }catch(error){
          return res.status(401).json({
