@@ -7,14 +7,15 @@ BR Pizza é um sistema de gestão interna para pizzarias que atendem por mesa. O
 ### Usuários e permissões
 
 - O cadastro exige nome com pelo menos 3 caracteres, e-mail válido e único e senha com pelo menos 6 caracteres. A senha é armazenada como hash com bcrypt.
-- Novos usuários recebem o perfil `STAFF`. O login verifica as credenciais e emite um JWT com validade de 30 dias. O painel web exige o perfil `ADMIN`.
+- O cadastro público coleta os dados da conta e depois o nome, CNPJ e descrição da pizzaria. Uma transação cria a pizzaria em `business` e a conta `ADMIN` com `users.id_pizza_place`. O CNPJ é normalizado antes da verificação de unicidade.
+- O login emite um JWT de 30 dias com `sub` (usuário) e `business_id` (pizzaria). O painel web exige `ADMIN`. Contas `STAFF` vinculadas podem consumir as rotas permitidas pela API no futuro aplicativo.
 - Na API, criar categorias, cadastrar produtos e excluir produtos exige `ADMIN`. As demais operações protegidas exigem autenticação.
 
-### Vínculo dos dados com o usuário
+### Vínculo dos dados com a pizzaria
 
-- A API usa o ID do JWT para associar novas categorias e pedidos ao usuário autenticado. Produtos herdam o vínculo pela categoria, e itens, pelo pedido.
-- As listagens, os detalhes e as alterações usam o mesmo vínculo. Ao incluir um item, tanto o pedido quanto a categoria do produto devem pertencer ao usuário autenticado.
-- Categorias e pedidos anteriores à migração ficam com `user_id` nulo. Eles e os registros que dependem deles só aparecem após a atribuição explícita a um usuário.
+- Categorias, produtos e pedidos têm `business_id`. Cada item é acessado pelo pedido. O pedido também guarda o usuário que o criou para referência.
+- O backend usa a pizzaria do JWT e confirma o vínculo da conta no banco. O painel pode visualizar pedidos criados por qualquer conta da mesma pizzaria. Ao cadastrar um produto ou adicionar um item, a API verifica se os registros relacionados pertencem à mesma pizzaria.
+- Após a migração, contas e registros antigos precisam de vínculo com uma pizzaria para entrar no fluxo. O dono anterior da categoria fica preservado em `legacy_owner_id`, e o autor do pedido, em `user_id`. Tokens emitidos antes da inclusão de `business_id` precisam ser renovados pelo login.
 
 ### Cardápio
 
@@ -45,7 +46,7 @@ BR Pizza é um sistema de gestão interna para pizzarias que atendem por mesa. O
 | Rota | Acesso | Comportamento |
 | --- | --- | --- |
 | `/` | Público | Página inicial provisória. |
-| `/register` | Público | Cadastro de usuário. Após o sucesso, encaminha para `/login`. |
+| `/register` | Público | Cadastro em duas etapas da conta administrativa e da pizzaria. Após o sucesso, encaminha para `/login`. |
 | `/login` | Público | Inicia a sessão. Usuários autenticados são encaminhados para `/dashboard`. |
 | `/access-denied` | Público | Exibe a mensagem de acesso negado. |
 | `/dashboard` | `ADMIN` | Lista pedidos pendentes enviados à cozinha. Permite consultar o detalhe e finalizar o pedido. Aceita `page` e `limit` na URL, com valores padrão 1 e 10. |
@@ -61,7 +62,7 @@ As rotas são montadas na raiz da API. Envie o cabeçalho `Authorization: Bearer
 | Método | Rota | Acesso | Operação e entrada |
 | --- | --- | --- | --- |
 | GET | `/docs` | Público | Abre o Swagger UI. |
-| POST | `/user` | Público | Cadastra usuário com `name`, `email` e `password`. |
+| POST | `/user` | Público | Cadastra a pizzaria e sua conta `ADMIN` com `name`, `email`, `password` e `business` contendo `name`, `cnpj` e `description`. |
 | POST | `/session` | Público | Autentica com `email` e `password` e retorna o JWT em `autenticate.token`. |
 | GET | `/me` | Autenticado | Retorna os dados e o perfil do usuário atual. |
 | POST | `/category` | `ADMIN` | Cadastra categoria com `name`. |
@@ -130,7 +131,7 @@ npm ci
 npm run dev
 ```
 
-O frontend fica em `http://localhost:3000` e o Swagger em `http://localhost:3333/docs`. Para acessar o painel no ambiente local, cadastre um usuário em `/register` e altere seu campo `role` para `ADMIN` no banco local. O repositório não inclui seed administrativo.
+O frontend fica em `http://localhost:3000` e o Swagger em `http://localhost:3333/docs`. Para acessar o painel no ambiente local, cadastre a conta e a pizzaria em `/register` e entre com a conta administrativa criada.
 
 ## Status do projeto
 

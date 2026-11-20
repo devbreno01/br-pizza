@@ -144,7 +144,7 @@ const deleteOrder = new DeleteOrderController();
  * @swagger
  * /user:
  *   post:
- *     summary: Create a new user
+ *     summary: Register a pizza business and its administrator
  *     tags:
  *       - User
  *     requestBody:
@@ -157,6 +157,7 @@ const deleteOrder = new DeleteOrderController();
  *               - name
  *               - email
  *               - password
+ *               - business
  *             properties:
  *               name:
  *                 type: string
@@ -170,15 +171,26 @@ const deleteOrder = new DeleteOrderController();
  *                 type: string
  *                 minLength: 6
  *                 example: "senha123"
+ *               business:
+ *                 type: object
+ *                 required: [name, cnpj, description]
+ *                 properties:
+ *                   name: { type: string, minLength: 3 }
+ *                   cnpj: { type: string }
+ *                   description: { type: string, minLength: 1 }
  *           example:
  *             name: "João Silva"
  *             email: "joao@example.com"
  *             password: "senha123"
+ *             business:
+ *               name: "Pizzaria da Vila"
+ *               cnpj: "12.345.678/0001-95"
+ *               description: "Pizzaria com atendimento por mesa"
  *     responses:
  *       201:
- *         description: User created successfully
+ *         description: Business and administrator created
  *       400:
- *         description: Invalid input
+ *         description: Invalid input, duplicate email or duplicate CNPJ
  */
 router.post("/user",validateSchema(CreateUserSchema), createUser.handle);
 
@@ -211,9 +223,9 @@ router.post("/user",validateSchema(CreateUserSchema), createUser.handle);
  *             password: "senha123"
  *     responses:
  *       200:
- *         description: Authentication successful, returns user and token
- *       401:
- *         description: Invalid credentials
+ *         description: Authentication successful, returns the user, business_id and a JWT with sub and business_id
+ *       400:
+ *         description: Invalid credentials or user without a business
  */
 router.post("/session",validateSchema(AuthUserSchema),authUser.handle);
 
