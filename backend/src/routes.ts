@@ -413,16 +413,15 @@ router.get(
  *     responses:
  *       200:
  *         description: Product deleted successfully
+ *       400:
+ *         description: Product could not be deleted, for example because it does not exist or is linked to order items
  *       401:
- *         description: Unauthorized
- *       403:
- *         description: Forbidden - Admin access required
- *       404:
- *         description: Product not found
+ *         description: Missing or invalid token, or administrator access required
  */
 router.delete(
     "/products/:id",
     isAuthenticated,
+    isAdmin,
     deleteProduct.handle);
 
 /**
@@ -772,4 +771,4 @@ router.delete(
 )
 
 
-export { router }; 
+export { router };
