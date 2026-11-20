@@ -8,8 +8,7 @@ import { PaginationControl } from "@/components/dashboard/pagination-control";
 
 import { apiClient } from "@/lib/api";
 import { getToken } from "@/lib/auth";
-import { ApiResponse, Product } from "@/lib/types";
-import Categories from "../categories/page";
+import { ApiResponse, Pagination, Product } from "@/lib/types";
 import { formatPrice } from "@/lib/utils";
 
 
@@ -19,7 +18,7 @@ interface Props {
 
 async function getProducts(page:number, limit:number){
     const token = await getToken(); 
-    const res = await apiClient<ApiResponse<Product[]>>(`/products?page=${page}&limit=${limit}`,{
+    const res = await apiClient<ApiResponse<{ list: Product[] }> & Pagination>(`/products?page=${page}&limit=${limit}`,{
         token: token
     });
     return res; 
@@ -32,8 +31,6 @@ export default async function Products({searchParams}: Props){
 
     const { data , totalPages} = await getProducts(page, limit)
     const products = data.list; 
-    console.log('here')
-    console.log(searchParams)
     
     return (
         <div className="space-y-4 sm:space-y-6">

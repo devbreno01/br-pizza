@@ -1,6 +1,6 @@
 import { ListProductService } from "../../services/products/ListProductService";
 import { Request, Response, NextFunction } from "express";
-import { parseLimitQuery, parsePageQuery } from "../../utils/utils";
+import { parsePagination } from "../../utils/utils";
 class ListProductController {
     async handle(req: Request, res:Response ){
         const listProductService = new ListProductService();
@@ -12,8 +12,7 @@ class ListProductController {
                         : undefined;
 
 
-        const page = parsePageQuery(req.query.page); 
-        const limit = parseLimitQuery(req.query.limit);
+        const { page, limit } = parsePagination(req.query);
 
         const list = await listProductService.execute({user_id: req.user_id, disabled: disabled,
                                                         limit: limit, 

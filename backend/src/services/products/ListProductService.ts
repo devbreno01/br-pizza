@@ -37,9 +37,7 @@ class ListProductService {
                 
                 skip: offset, 
                 take: limit, 
-                orderBy: {
-                    name: "asc"
-                }
+                orderBy: [{ name: "asc" }, { id: "asc" }]
                
             });
         
