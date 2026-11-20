@@ -1,12 +1,13 @@
 import prismaClient from "../../prisma"
 
 class ListProductsByCategoryService{
-    async execute(category_id: string){
+    async execute(category_id: string, user_id: string){
          try{
             const products = prismaClient.product.findMany({
             
                 where:{
-                    category_id: category_id,
+                    category_id,
+                    category: { user_id },
                     disabled: false
                 },
 

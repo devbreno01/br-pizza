@@ -15,12 +15,12 @@ class ListProductController {
         const page = parsePageQuery(req.query.page); 
         const limit = parseLimitQuery(req.query.limit);
 
-        const list = await listProductService.execute({disabled: disabled,
+        const list = await listProductService.execute({user_id: req.user_id, disabled: disabled,
                                                         limit: limit, 
                                                         page: page}); 
 
         
-        const total = await listProductService.getCountOfProducts(); 
+        const total = await listProductService.getCountOfProducts(req.user_id, disabled);
         let totalPages = Math.ceil(total/limit); 
 
         return res.json({

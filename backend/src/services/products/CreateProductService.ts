@@ -4,6 +4,7 @@ import { Readable } from "stream";
 
 
 interface CreateProductServiceProps{
+    user_id: string,
     name: string, 
     price: number, 
     description: string, 
@@ -15,11 +16,12 @@ interface CreateProductServiceProps{
 
 class CreateProductService {
 
-    async execute({name ,price,description ,imageBuffer ,imageName ,category_id}: CreateProductServiceProps){
+    async execute({user_id, name ,price,description ,imageBuffer ,imageName ,category_id}: CreateProductServiceProps){
 
-        const verifyCategory = prismaClient.category.findFirst({
+        const verifyCategory = await prismaClient.category.findFirst({
             where:{
-                id: category_id
+                id: category_id,
+                user_id
             }
         }); 
 
@@ -56,30 +58,6 @@ class CreateProductService {
            
         }catch(error){
              throw new Error("Erro ao fazer o upload da imagem"); 
-        }
-
-        try{
-            const product = prismaClient.product.create({
-                data:{
-                    name: name, 
-                    price: price, 
-                    description: description, 
-                   // banner: banner, 
-                    category_id: category_id
-                }, 
-                
-                select:{
-                    name: true, 
-                    price: true, 
-                    description: true, 
-                    banner: true, 
-                    disabled: true, 
-                    category_id: true
-
-                }
-            }); 
-        }catch(error){
-            throw new Error("Erro ao tentar cadastrar produto. Tente novamente!"); 
         }
 
         const product = await prismaClient.product.create({

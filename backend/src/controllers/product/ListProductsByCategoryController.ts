@@ -8,7 +8,7 @@ class ListProductsByCategoryController{
         const {category_id} = req.params; 
 
 
-        const list = await listProductService.execute(category_id as string); 
+        const list = await listProductService.execute(category_id as string, req.user_id);
 
         return res.json({
             message: "List of products", 
