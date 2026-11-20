@@ -9,7 +9,7 @@ class ListOrderDetailController {
         
         const service = new ListOrdersItemService(); 
         const  id = req.params.id; 
-        const listDetails  = await service.execute({order_id: id as string}); 
+        const listDetails  = await service.execute({order_id: id as string, user_id: req.user_id});
 
        return res.json(listDetails);
     }

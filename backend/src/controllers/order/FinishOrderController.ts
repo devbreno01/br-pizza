@@ -5,7 +5,8 @@ class FinishOrderController{
         const service = new FinishOrderService(); 
         const { order_id, name} = req.body; 
         const finishOrder = await  service.execute({
-            order_id:order_id, 
+            order_id:order_id,
+            user_id: req.user_id,
             name: name
         });
 

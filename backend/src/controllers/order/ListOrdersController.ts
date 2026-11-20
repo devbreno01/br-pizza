@@ -16,7 +16,7 @@ class ListOrdersController {
         const listOrdersService = new ListDetailOrderService();
 
 
-        const listOrders = await  listOrdersService.execute(isDraft);
+        const listOrders = await  listOrdersService.execute(req.user_id, isDraft);
 
         return res.json({listOrders}); 
     }

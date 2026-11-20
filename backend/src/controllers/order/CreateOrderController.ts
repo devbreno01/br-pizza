@@ -8,7 +8,8 @@ class CreateOrderController {
         const createOrderService = new CreateOrderService();
 
         const createOrder = await  createOrderService.execute({table:table, 
-            name: name, 
+            name: name,
+            user_id: req.user_id,
             status: status, 
             draft: draft
         });

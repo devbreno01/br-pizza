@@ -2,15 +2,17 @@ import prismaClient from "../../prisma";
 
 interface SendOrderProps {
     name: string , 
+    user_id: string
     order_id: string
 }
 
 class SendOrderService {
-    async execute({name, order_id} :SendOrderProps ){
+    async execute({name, order_id, user_id} :SendOrderProps ){
         try{
             const oderExists = await prismaClient.order.findFirst({
                 where:{
-                    id: order_id
+                    id: order_id,
+                    user_id
                 }
             }); 
 
@@ -21,7 +23,8 @@ class SendOrderService {
             // Setting draft false, so send to kitchen 
             const sendKitchen = await prismaClient.order.update({
                 where:{
-                    id: order_id
+                    id: order_id,
+                    user_id
                 }, 
                 data:{
                     draft : false, 

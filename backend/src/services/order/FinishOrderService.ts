@@ -2,14 +2,16 @@ import prismaClient from "../../prisma";
 
 interface SendOrderProps {
     name: string , 
+    user_id: string
     order_id: string
 }
 class FinishOrderService {
-    async execute({name, order_id} :SendOrderProps){
+    async execute({name, order_id, user_id} :SendOrderProps){
         try{
              const oderExists = await prismaClient.order.findFirst({
                 where:{
-                    id: order_id
+                    id: order_id,
+                    user_id
                 }
             }); 
 
@@ -20,7 +22,8 @@ class FinishOrderService {
             // Setting status true, so finish a order
             const finishOrder = await prismaClient.order.update({
                 where:{
-                    id: order_id
+                    id: order_id,
+                    user_id
                 }, 
                 data:{
                     status : true, 

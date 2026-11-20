@@ -1,12 +1,13 @@
 import prismaClient  from "../../prisma"; 
 
 class ListDetailOrderService{
-     async execute(draft?: boolean){
+     async execute(user_id: string, draft?: boolean){
 
         
         try{
             const listOrders = await prismaClient.order.findMany({
                 where:{
+                    user_id,
                     ...(draft !== undefined && { draft })
                 }, 
                 select:{
@@ -16,6 +17,7 @@ class ListDetailOrderService{
                     draft: true, 
                     name: true,
                     itens:{
+                        where: { product: { category: { user_id } } },
                         select:{
                             id: true, 
                             amount:true, 

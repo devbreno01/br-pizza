@@ -6,7 +6,8 @@ class SendOrderController {
         const service = new SendOrderService(); 
         const { order_id, name} = req.body; 
         const sendOrderKitchen = await  service.execute({
-            order_id:order_id, 
+            order_id:order_id,
+            user_id: req.user_id,
             name: name
         });
 

@@ -1,16 +1,18 @@
 import prismaClient from "../../prisma"; 
 
 interface ItemOrderProps{
+    user_id: string
     id: string
 
 } 
 class RemoveItemOrderService{
-    async execute({id}: ItemOrderProps){
+    async execute({id, user_id}: ItemOrderProps){
         
         try{
             const searchItem = await prismaClient.item.findFirst({
                 where:{
-                    id : id
+                    id : id,
+                    order: { user_id }
                 }
             });
 
@@ -20,7 +22,8 @@ class RemoveItemOrderService{
             
             const deleteItem = await prismaClient.item.delete({
                 where:{
-                    id : id
+                    id : id,
+                    order: { user_id }
                 }
             });
 
