@@ -46,7 +46,12 @@ export async function apiClient <T> (
             error: "Erro HTTP: " + response.status  
         }))
 
-        throw new Error(error.error || "Erro na requisição");
+        const messages = Array.isArray(error?.details)
+            ? error.details.flatMap((detail: { message?: unknown } | null) =>
+                typeof detail?.message === "string" ? [detail.message] : [])
+            : [];
+
+        throw new Error(messages.join(" ") || error?.error || "Erro na requisição");
     }
 
     return response.json(); 

@@ -1,7 +1,6 @@
 import { cookies } from "next/headers";
-import { User, UserInfo} from "@/lib/types"; 
+import { UserInfo} from "@/lib/types";
 import { apiClient } from "./api";
-import { Redirect } from "next";
 import { redirect } from "next/navigation";
 
 const COOKIE_NAME = "token_users"; 
@@ -48,7 +47,7 @@ export async function getUser(): Promise< UserInfo | null>{
     }
 }
 
-export async function getRequiredUser(): Promise<UserInfo | null> {
+export async function getRequiredUser(): Promise<UserInfo> {
     const user  = await getUser(); 
   
    

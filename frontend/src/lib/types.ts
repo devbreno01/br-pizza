@@ -5,6 +5,7 @@ export interface User {
     email: string; 
     role : "STAFF" | "ADMIN"; 
     createdAt: string
+    id_pizza_place: string;
 }
 
 export interface UserInfo{
@@ -12,13 +13,13 @@ export interface UserInfo{
 }
 
 export interface AuthResponse {
-    autenticate?: Authenticate
+    autenticate: Authenticate
 }
 
 interface Authenticate {
   id: string;
   email: string;
-  password: string;
+  business_id: string;
   role: string;
   token: string;
 }

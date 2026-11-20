@@ -1,7 +1,7 @@
 "use server"; 
 
 import { apiClient } from "@/lib/api";
-import { AuthResponse } from "@/lib/types";
+import { ApiResponse, AuthResponse, User } from "@/lib/types";
 import { setToken, removeToken} from "@/lib/auth";
 import { redirect } from "next/navigation";
 
@@ -18,11 +18,16 @@ export async function registerAction(
     const data = {
         name: name, 
         email: email, 
-        password:password
+        password,
+        business: {
+            name: formData.get("businessName"),
+            cnpj: formData.get("cnpj"),
+            description: formData.get("businessDescription")
+        }
     }
    
    try{
-        await apiClient <User>("/user", {
+        await apiClient<ApiResponse<User>>("/user", {
             method: "POST", 
             body: JSON.stringify(data)
         }); 
