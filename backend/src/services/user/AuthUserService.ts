@@ -9,7 +9,6 @@ interface AuthUserServiceProps{
 
 class AuthUserService { 
     async execute({email, password}: AuthUserServiceProps){
-        console.log(email, password);
         
         const user = await prismaClient.user.findFirst({
             where:{
@@ -27,19 +26,22 @@ class AuthUserService {
             throw new Error("Email/senha obrigatório");
         }
 
-        const token = sign({
-            name: user.name, password: user.password}, 
-            process.env.JWT_SECRET as string,
-            {subject: user.id ,
-             expiresIn: "30d"   
-        });
+        if (!user.id_pizza_place) {
+            throw new Error("Usuário sem pizzaria vinculada");
+        }
 
+        const token = sign(
+            { business_id: user.id_pizza_place },
+            process.env.JWT_SECRET as string,
+            { subject: user.id, expiresIn: "30d" }
+        );
 
         return {
             id: user.id,
             name: user.name, 
             email: user.email, 
-            role: user.role, 
+            role: user.role,
+            business_id: user.id_pizza_place,
             token: token
         };
     }

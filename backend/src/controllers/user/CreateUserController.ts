@@ -8,7 +8,7 @@ class CreateUserController{
 
         const user = await createUserService.execute(req.body); 
 
-        return res.json({ 
+        return res.status(201).json({
             message: "Usuário criado com sucesso",
             data: user
         }); 

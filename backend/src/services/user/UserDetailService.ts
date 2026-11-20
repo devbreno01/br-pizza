@@ -12,6 +12,7 @@ class UserDetailService{
                 name:true, 
                 email: true, 
                 role: true,
+                id_pizza_place: true,
                 createdAt: true
                 }
             });        
