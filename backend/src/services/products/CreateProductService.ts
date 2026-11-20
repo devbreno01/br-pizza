@@ -4,7 +4,7 @@ import { Readable } from "stream";
 
 
 interface CreateProductServiceProps{
-    user_id: string,
+    business_id: string,
     name: string, 
     price: number, 
     description: string, 
@@ -16,12 +16,12 @@ interface CreateProductServiceProps{
 
 class CreateProductService {
 
-    async execute({user_id, name ,price,description ,imageBuffer ,imageName ,category_id}: CreateProductServiceProps){
+    async execute({business_id, name ,price,description ,imageBuffer ,imageName ,category_id}: CreateProductServiceProps){
 
         const verifyCategory = await prismaClient.category.findFirst({
             where:{
                 id: category_id,
-                user_id
+                business_id
             }
         }); 
 
@@ -65,6 +65,7 @@ class CreateProductService {
                 name: name, 
                 price: price, 
                 description: description, 
+                business_id,
                 category_id: category_id, 
                 banner: bannerUrl 
             }, 

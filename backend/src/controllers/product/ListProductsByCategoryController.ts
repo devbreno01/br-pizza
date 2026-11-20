@@ -8,7 +8,7 @@ class ListProductsByCategoryController {
         const { category_id } = req.params;
         const { list, ...pagination } = await service.execute(
             category_id as string,
-            req.user_id,
+            req.business_id,
             parsePagination(req.query)
         );
 

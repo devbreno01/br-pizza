@@ -13,7 +13,7 @@ class CreateProductController{
 
         const createProduct = await createProductService.execute({
             name:name,
-            user_id: req.user_id,
+            business_id: req.business_id,
             price: parseFloat(price), 
             description:description, 
             category_id:category_id,

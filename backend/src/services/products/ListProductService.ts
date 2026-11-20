@@ -1,7 +1,7 @@
 import prismaClient from "../../prisma"
 
 interface listCategoryProps{
-    user_id: string,
+    business_id: string,
     disabled: boolean | undefined,
     limit: number, 
     page: number
@@ -10,14 +10,14 @@ interface listCategoryProps{
 class ListProductService {
     
 
-    async execute({user_id, disabled, limit, page}: listCategoryProps) {
+    async execute({business_id, disabled, limit, page}: listCategoryProps) {
         try{
             const offset =  (page -1 ) * limit; 
             const products = prismaClient.product.findMany({
             
                 where:{
                     disabled,
-                    category: { user_id }
+                    business_id, category: { business_id }
                 },
 
                 select:{
@@ -47,9 +47,9 @@ class ListProductService {
         }
     }
 
-    async getCountOfProducts(user_id: string, disabled: boolean | undefined){
+    async getCountOfProducts(business_id: string, disabled: boolean | undefined){
         const total = await prismaClient.product.count({
-            where: { disabled, category: { user_id } }
+            where: { disabled, business_id, category: { business_id } }
         });
         return total; 
     }

@@ -2,8 +2,8 @@ import prismaClient from "../../prisma";
 import { Pagination, paginationMetadata, paginationOffset } from "../../utils/utils";
 
 class ListProductsByCategoryService {
-    async execute(category_id: string, user_id: string, pagination: Pagination) {
-        const where = { category_id, category: { user_id }, disabled: false };
+    async execute(category_id: string, business_id: string, pagination: Pagination) {
+        const where = { category_id, business_id, category: { business_id }, disabled: false };
         const [list, total] = await prismaClient.$transaction([
             prismaClient.product.findMany({
                 where,

@@ -2,15 +2,15 @@ import prismaClient  from "../../prisma"
 
 interface deleteProductProps {
     id: string
-    user_id: string
+    business_id: string
 }
 
 class DeleteProductService{
-    async execute({id, user_id}: deleteProductProps){
+    async execute({id, business_id}: deleteProductProps){
         
         try{
            await prismaClient.product.delete({
-                where: { id, category: { user_id } }
+                where: { id, business_id, category: { business_id } }
             })
 
             return {message: "Produto deletado com sucesso"}; 

@@ -6,7 +6,7 @@ class DeleteProductController{
        const { id } = req.params; 
     
        const deleteService = new DeleteProductService();
-       const deleteProduct = await deleteService.execute({id:id as string, user_id: req.user_id});
+       const deleteProduct = await deleteService.execute({id:id as string, business_id: req.business_id});
        return res.json({deleteProduct});
 
     }
