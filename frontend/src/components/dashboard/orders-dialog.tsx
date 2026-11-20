@@ -13,9 +13,10 @@ import { Button} from "@/components/ui/button";
 
 import { EyeIcon } from "lucide-react"; 
 import { useEffect, useState } from "react";
-import { ApiResponse, Order } from "@/lib/types";
+import { Order } from "@/lib/types";
 import { apiClient } from "@/lib/api";
 import { formatPrice } from "@/lib/utils";
+import { useRouter } from "next/navigation";
 
 
 interface OrderDialogProps {
@@ -23,6 +24,7 @@ interface OrderDialogProps {
     token: string;
 }
 export default function OrdersDialog({ orderId,token }:OrderDialogProps  ){
+    const router = useRouter();
     const [open, setOpen ]  = useState(false); 
     const [loading,setLoading] = useState(false); 
     const [order, setOrder] = useState<Order | null>(null);
@@ -66,36 +68,23 @@ export default function OrdersDialog({ orderId,token }:OrderDialogProps  ){
     }
 
     const finishOrder = async () => {
-      
-        setLoading(true); 
-           
-        const formElement = e.currentTarget; 
-        
-        const name = order?.name || 'Sem nome';   
-        const order_id = orderId;
+        if (!orderId) return;
 
-        if(!order_id){
-            return; 
-        }
-
-        const payload = {
-            name: name, 
-            order_id: orderId
-        }
-
-       try{
-            const response = await apiClient("/order/finish",{
-                method: "PUT", 
-                token: token, 
-                body:JSON.stringify(payload)
+        setLoading(true);
+        try {
+            await apiClient("/order/finish", {
+                method: "PUT",
+                token,
+                body: JSON.stringify({ name: order?.name || "Sem nome", order_id: orderId })
             });
-
-            setOpen(false)
-       }catch(e){
-            console.log(e)
-       }
-    } 
-
+            setOpen(false);
+            router.refresh();
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     useEffect(()=>{
         if(open){

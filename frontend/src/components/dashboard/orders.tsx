@@ -1,59 +1,19 @@
 "use client"
 
-import { apiClient } from "@/lib/api";
-import { ApiResponse, Order } from "@/lib/types";
-import { Card, CardHeader , CardTitle , CardContent} from "@/components/ui/card";
-import { Button } from "@/components/ui/button"
-import { Badge } from  "@/components/ui/badge";
-import { Tags, EyeIcon } from "lucide-react";
-import { useEffect, useState } from "react";
-
-import Error from "next/error";
-import { formatPrice } from "@/lib/utils"
+import { Order } from "@/lib/types";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { formatPrice } from "@/lib/utils";
 import OrdersDialog from "./orders-dialog";
 
-interface OrdersProps{
-    token: string
+interface OrdersProps {
+    orders: Order[];
+    token: string;
 }
-export  function Orders({token}: OrdersProps){
-    const [orders, setOrders] = useState<Order[]>([])
-    const [loading, setLoading] = useState(true); 
 
-    useEffect(()=>{
-        async function loadOrders(){
-            
-            try{
-                const response = await apiClient<ApiResponse<Order[]>>("/orders?draft=false",{
-                    method: "GET",
-                    token: token 
-                }); 
-              
-                if(response)
-                {
-                    let pendingOrders = response.listOrders.filter(order => !order.status)
-                    setOrders(pendingOrders)
-                    setLoading(false); 
-                }
-
-            }catch(e){
-               console.log(e)
-            }
-        
-        }
-
-        loadOrders(); 
-    }, [])
-    
-    const calcTotalOfOrder = (order) => {
-        if(!order.itens) return 0; 
-
-        return order.itens.reduce((total, item)=> {
-            return total + item.product.price * item.amount
-        }, 0); 
-    }
-
-
-    if (loading) return <p className="text-center text-gray-300">Loading...</p>;
+export function Orders({ orders, token }: OrdersProps) {
+    const calcTotalOfOrder = (order: Order) =>
+        order.itens?.reduce((total, item) => total + item.product.price * item.amount, 0) ?? 0;
 
     return (
          <div>

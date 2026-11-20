@@ -1,27 +1,17 @@
-
 import { Request, Response } from "express";
 import { ListDetailOrderService } from "../../services/order/ListDetailOrderService";
+import { parsePagination } from "../../utils/utils";
 
 class ListOrdersController {
-     async handle(req: Request, res: Response){
+    async handle(req: Request, res: Response) {
+        const { draft, status } = req.query;
+        const isDraft = draft === "true" ? true : draft === "false" ? false : undefined;
+        const isFinished = status === "true" ? true : status === "false" ? false : undefined;
+        const service = new ListDetailOrderService();
 
-        const { draft } = req.query; 
-        let isDraft: boolean | undefined;
-
-        if (draft === "true") {
-            isDraft = true;
-        } else if (draft === "false") {
-            isDraft = false;
-        }
-        const listOrdersService = new ListDetailOrderService();
-
-
-        const listOrders = await  listOrdersService.execute(req.user_id, isDraft);
-
-        return res.json({listOrders}); 
+        const result = await service.execute(req.user_id, parsePagination(req.query), isDraft, isFinished);
+        return res.json(result);
     }
-
 }
 
-
-export {ListOrdersController}
+export { ListOrdersController };

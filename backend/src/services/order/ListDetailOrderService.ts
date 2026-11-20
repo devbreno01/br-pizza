@@ -1,45 +1,43 @@
-import prismaClient  from "../../prisma"; 
+import prismaClient from "../../prisma";
+import { Pagination, paginationMetadata, paginationOffset } from "../../utils/utils";
 
-class ListDetailOrderService{
-     async execute(user_id: string, draft?: boolean){
-
-        
-        try{
-            const listOrders = await prismaClient.order.findMany({
-                where:{
-                    user_id,
-                    ...(draft !== undefined && { draft })
-                }, 
+class ListDetailOrderService {
+    async execute(user_id: string, pagination: Pagination, draft?: boolean, status?: boolean) {
+        const where = { user_id, draft, status };
+        const [listOrders, total] = await prismaClient.$transaction([
+            prismaClient.order.findMany({
+                where,
+                ...paginationOffset(pagination),
+                orderBy: [{ createdAt: "desc" }, { id: "desc" }],
                 select:{
-                    id:true, 
-                    table: true, 
-                    status: true, 
-                    draft: true, 
+                    id:true,
+                    table: true,
+                    status: true,
+                    draft: true,
                     name: true,
                     itens:{
                         where: { product: { category: { user_id } } },
                         select:{
-                            id: true, 
-                            amount:true, 
+                            id: true,
+                            amount:true,
                             product: {
                                 select:{
-                                    name: true, 
-                                    price: true, 
-                                    description: true, 
-                                    banner: true, 
+                                    name: true,
+                                    price: true,
+                                    description: true,
+                                    banner: true,
                                     disabled: true
                                 }
                             }
                         }
                     }
                 }
-            })
+            }),
+            prismaClient.order.count({ where })
+        ]);
 
-            return listOrders; 
-        }catch(error){
-            throw new Error("Erro ao exibir listagem")
-        }
+        return { listOrders, ...paginationMetadata(pagination, total) };
     }
 }
 
-export {ListDetailOrderService}
+export { ListDetailOrderService };
