@@ -7,7 +7,7 @@ class CreateCategoryController{
         
         const { name } = req.body; 
         const createCategoryService = new CreateCategoryService(); 
-        const category = await createCategoryService.execute({name: name}); 
+        const category = await createCategoryService.execute({name, user_id: req.user_id});
 
         return res.json({
             message: "Categoria criada com sucesso",
