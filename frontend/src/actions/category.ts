@@ -1,10 +1,8 @@
 "use server"
 
 import { apiClient } from "@/lib/api"
-import { ApiResponse, AuthResponse } from "@/lib/types"
-import { redirect } from "next/navigation";
+import { ApiResponse, Category, Pagination } from "@/lib/types"
 import { getToken } from "@/lib/auth"
-import { Category } from "@/lib/types"
 
 export async function createAction(
     prevState: {success: boolean, error: string | null }, 
@@ -37,14 +35,21 @@ export async function createAction(
     }
 }
 
-export async function getCategories () : Promise<T>
-{
-    const token = await getToken(); 
-    const response = await apiClient<ApiResponse<Category[]>>("/categories", {
-        token: token!
-    })
+export async function getCategories(): Promise<Category[]> {
+    const token = await getToken();
+    const categories: Category[] = [];
+    let page = 1;
+    let totalPages: number;
 
-    const categories = response.data  
+    do {
+        const response = await apiClient<ApiResponse<Category[]> & Pagination>(
+            `/categories?page=${page}&limit=100`,
+            { token }
+        );
+        categories.push(...response.data);
+        totalPages = response.totalPages;
+        page++;
+    } while (page <= totalPages);
 
-    return categories; 
+    return categories;
 }

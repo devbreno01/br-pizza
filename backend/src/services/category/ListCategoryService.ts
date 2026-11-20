@@ -1,24 +1,25 @@
-import prismaClient from "../../prisma"; 
+import prismaClient from "../../prisma";
+import { Pagination, paginationMetadata, paginationOffset } from "../../utils/utils";
 
-
-class ListCategoryService{
-    async execute(user_id: string){
-        try{
-            const categories = prismaClient.category.findMany({
-                where: { user_id },
+class ListCategoryService {
+    async execute(user_id: string, pagination: Pagination) {
+        const where = { user_id };
+        const [categories, total] = await prismaClient.$transaction([
+            prismaClient.category.findMany({
+                where,
+                ...paginationOffset(pagination),
+                orderBy: [{ name: "asc" }, { id: "asc" }],
                 select:{
-                    id: true, 
-                    name: true, 
+                    id: true,
+                    name: true,
                     createdAt: true
                 }
-              
-            })
+            }),
+            prismaClient.category.count({ where })
+        ]);
 
-            return categories; 
-        }catch(error){
-            throw new Error("Erro ao listar categorias"); 
-        }
+        return { categories, ...paginationMetadata(pagination, total) };
     }
 }
 
-export {ListCategoryService}
+export { ListCategoryService };

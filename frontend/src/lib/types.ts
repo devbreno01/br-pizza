@@ -34,7 +34,16 @@ export interface Category{
 export interface ApiResponse<T> {
   message: string;
   data: T;
-  listOrders?: T; 
+}
+
+export interface Pagination {
+    page: number;
+    limit: number;
+    totalPages: number;
+}
+
+export interface PaginatedOrders extends Pagination {
+    listOrders: Order[];
 }
 
 export interface Product {
@@ -55,5 +64,9 @@ export interface Order {
     draft: boolean, 
     status: boolean, 
     name?: string
-    itens?: any
+    itens?: {
+        id: string;
+        amount: number;
+        product: Pick<Product, "name" | "price" | "description" | "banner">;
+    }[]
 }

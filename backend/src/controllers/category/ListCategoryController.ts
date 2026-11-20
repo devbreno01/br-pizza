@@ -1,21 +1,17 @@
 import { Request, Response } from "express";
 import { ListCategoryService } from "../../services/category/ListCategoryService";
 
+import { parsePagination } from "../../utils/utils";
+
 class ListCategoryController{
     async handle(req: Request, res: Response){
         const service = new ListCategoryService(); 
-        const categories = await service.execute(req.user_id);
+        const { categories, ...pagination } = await service.execute(req.user_id, parsePagination(req.query));
 
-        if(!categories ){
-            return res.status(401).json({
-                error: "Erro ao listar cateogria"
-            })
-        }
-
-        
         return res.json({
             message: "Listagem de categorias",
-            data: categories
+            data: categories,
+            ...pagination
         });
     }
 }

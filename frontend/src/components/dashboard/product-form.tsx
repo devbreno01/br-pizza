@@ -45,7 +45,7 @@ const initialState = {
 export default function ProductForm(){
     const router = useRouter();
     const [open, setOpen]  = useState(false); 
-    const [categories, setCategories] = useState([]); 
+    const [categories, setCategories] = useState<Category[]>([]);
     const [categoryId, setCategoryId] = useState(""); 
     const [price, setPrice] = useState('');
     const [isLoading, setIsLoading] = useState(false);

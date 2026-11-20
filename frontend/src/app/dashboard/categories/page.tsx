@@ -2,21 +2,29 @@
 ""
 import { getToken } from "@/lib/auth"
 import { apiClient } from "@/lib/api"
-import { ApiResponse, Category,  } from "@/lib/types";
+import { ApiResponse, Category, Pagination } from "@/lib/types";
 import { Card, CardTitle, CardHeader, CardContent } from "@/components/ui/card";
+import { PaginationControl } from "@/components/dashboard/pagination-control";
+import { redirect } from "next/navigation";
 import { Tags } from "lucide-react";
 
 import { CategoryForm } from "@/components/dashboard/category-form"
 
 
-export default async function Categories()
-{
-    const token = await getToken(); 
-    const response = await apiClient<ApiResponse<Category[]>>("/categories", {
-        token: token!
-    })
+export default async function Categories({ searchParams }: {
+    searchParams: Promise<{ page?: string; limit?: string }>;
+}) {
+    const params = await searchParams;
+    const query = new URLSearchParams({ page: params.page ?? "1", limit: params.limit ?? "10" });
+    const token = await getToken();
+    const { data: categories, page, limit, totalPages } = await apiClient<ApiResponse<Category[]> & Pagination>(
+        `/categories?${query}`,
+        { token }
+    );
 
-    const categories = response.data 
+    if (page > Math.max(totalPages, 1)) {
+        redirect(`/dashboard/categories?page=${Math.max(totalPages, 1)}&limit=${limit}`);
+    }
 
     return (
         <div className="space-y-4 sm:space-y-6">
@@ -52,6 +60,8 @@ export default async function Categories()
                     } )}
                 </div>
             )}
+
+            <PaginationControl currentPage={page} totalPages={totalPages} />
         </div>
     ); 
 }
