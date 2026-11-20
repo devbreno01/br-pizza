@@ -6,7 +6,7 @@ class DeleteOrderController {
     async handle(req: Request, res: Response){
         const service = new DeleteOrderService(); 
         const { id } = req.params; 
-        const deleteOrder = await service.execute({id: id as string, user_id: req.user_id});
+        const deleteOrder = await service.execute({id: id as string, business_id: req.business_id});
 
         return res.json({deleteOrder}); 
     }

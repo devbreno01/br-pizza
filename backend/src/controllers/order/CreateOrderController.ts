@@ -10,6 +10,7 @@ class CreateOrderController {
         const createOrder = await  createOrderService.execute({table:table, 
             name: name,
             user_id: req.user_id,
+            business_id: req.business_id,
             status: status, 
             draft: draft
         });

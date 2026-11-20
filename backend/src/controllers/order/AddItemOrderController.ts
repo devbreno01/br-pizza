@@ -7,7 +7,7 @@ class AddItemOrderController{
         const {amount, product_id, order_id} = req.body; 
         const addItem = await service.execute({
             amount: amount,
-            user_id: req.user_id,
+            business_id: req.business_id,
             product_id: product_id, 
             order_id: order_id
         });

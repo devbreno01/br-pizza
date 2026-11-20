@@ -2,8 +2,8 @@ import prismaClient from "../../prisma";
 import { Pagination, paginationMetadata, paginationOffset } from "../../utils/utils";
 
 class ListDetailOrderService {
-    async execute(user_id: string, pagination: Pagination, draft?: boolean, status?: boolean) {
-        const where = { user_id, draft, status };
+    async execute(business_id: string, pagination: Pagination, draft?: boolean, status?: boolean) {
+        const where = { business_id, draft, status };
         const [listOrders, total] = await prismaClient.$transaction([
             prismaClient.order.findMany({
                 where,
@@ -16,7 +16,7 @@ class ListDetailOrderService {
                     draft: true,
                     name: true,
                     itens:{
-                        where: { product: { category: { user_id } } },
+                        where: { product: { business_id, category: { business_id } } },
                         select:{
                             id: true,
                             amount:true,

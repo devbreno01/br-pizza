@@ -1,19 +1,19 @@
 import prismaClient from "../../prisma"; 
 
 interface ItemOrderProps{
-    user_id: string,
+    business_id: string,
     order_id: string, 
     product_id: string, 
     amount: number
 
 } 
 class AddItemOrderService{
-    async execute({user_id, order_id, product_id, amount}: ItemOrderProps){
+    async execute({business_id, order_id, product_id, amount}: ItemOrderProps){
         try{
             const oderExists = await prismaClient.order.findFirst({
                 where:{
                     id: order_id,
-                    user_id
+                    business_id
                 }
             }); 
 
@@ -25,7 +25,8 @@ class AddItemOrderService{
                 where:{
                     id: product_id, 
                     disabled: false,
-                    category: { user_id }
+                    business_id,
+                    category: { business_id }
                 }
             }); 
             

@@ -3,12 +3,12 @@ import { Request, Response } from "express";
 import prismaClient from "../../prisma";
 
 interface ItemOrderProps{
-    user_id: string
+    business_id: string
     order_id: string
 }
 
 class ListOrdersItemService {
-   async execute({order_id, user_id}: ItemOrderProps){
+   async execute({order_id, business_id}: ItemOrderProps){
      
         try{
            
@@ -16,7 +16,7 @@ class ListOrdersItemService {
             const searchItem = await prismaClient.order.findFirst({
                 where:{
                     id : order_id,
-                    user_id
+                    business_id
                 }, 
                 select:{
                     table: true, 
@@ -25,7 +25,7 @@ class ListOrdersItemService {
                     name: true, 
                     createdAt: true, 
                     itens:{
-                        where: { product: { category: { user_id } } },
+                        where: { product: { business_id, category: { business_id } } },
                         select:{
                             id: true, 
                             amount:true, 

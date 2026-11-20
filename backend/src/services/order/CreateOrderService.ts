@@ -1,6 +1,7 @@
 import prismaClient from "../../prisma"
 interface CreateOrderProps{
     user_id: string,
+    business_id: string,
     table: number, 
     draft: boolean,
     status: boolean, 
@@ -9,6 +10,7 @@ interface CreateOrderProps{
 class CreateOrderService {
     async execute({
         user_id,
+        business_id,
         table, 
         draft, 
         status, 
@@ -18,6 +20,7 @@ class CreateOrderService {
             const createOrder = await prismaClient.order.create({
                 data:{
                     user_id,
+                    business_id,
                     table: table, 
                     draft: draft, 
                     status: status, 

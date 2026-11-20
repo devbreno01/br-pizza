@@ -9,7 +9,7 @@ class ListOrdersController {
         const isFinished = status === "true" ? true : status === "false" ? false : undefined;
         const service = new ListDetailOrderService();
 
-        const result = await service.execute(req.user_id, parsePagination(req.query), isDraft, isFinished);
+        const result = await service.execute(req.business_id, parsePagination(req.query), isDraft, isFinished);
         return res.json(result);
     }
 }

@@ -1,17 +1,17 @@
 import prismaClient from "../../prisma";
 
 interface deleteOrderProps{
-    user_id: string
+    business_id: string
     id: string
 }
 
 class DeleteOrderService {
-    async execute ({id, user_id}: deleteOrderProps){
+    async execute ({id, business_id}: deleteOrderProps){
         try{
             const oderExists = await prismaClient.order.findFirst({
                 where:{
                     id: id,
-                    user_id
+                    business_id
                 }
             }); 
 
@@ -22,7 +22,7 @@ class DeleteOrderService {
             const deleteOrder = await prismaClient.order.delete({
                 where: {
                     id: id,
-                    user_id
+                    business_id
                 }
             })
         }catch(err){

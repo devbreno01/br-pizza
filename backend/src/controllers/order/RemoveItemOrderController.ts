@@ -10,7 +10,7 @@ class RemoveItemOrderController{
      
         const removeItem = await service.execute({
            id:id as string,
-           user_id: req.user_id
+           business_id: req.business_id
         });
         
         const message = removeItem.message; 
