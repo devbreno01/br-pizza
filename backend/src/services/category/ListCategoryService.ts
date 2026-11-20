@@ -2,8 +2,8 @@ import prismaClient from "../../prisma";
 import { Pagination, paginationMetadata, paginationOffset } from "../../utils/utils";
 
 class ListCategoryService {
-    async execute(user_id: string, pagination: Pagination) {
-        const where = { user_id };
+    async execute(business_id: string, pagination: Pagination) {
+        const where = { business_id };
         const [categories, total] = await prismaClient.$transaction([
             prismaClient.category.findMany({
                 where,

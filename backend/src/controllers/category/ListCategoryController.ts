@@ -6,7 +6,7 @@ import { parsePagination } from "../../utils/utils";
 class ListCategoryController{
     async handle(req: Request, res: Response){
         const service = new ListCategoryService(); 
-        const { categories, ...pagination } = await service.execute(req.user_id, parsePagination(req.query));
+        const { categories, ...pagination } = await service.execute(req.business_id, parsePagination(req.query));
 
         return res.json({
             message: "Listagem de categorias",

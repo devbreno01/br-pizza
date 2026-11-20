@@ -2,18 +2,18 @@ import prismaClient from "../../prisma";
 
 interface createCategoryProps{
     name: string
-    user_id: string
+    business_id: string
 
 }; 
 
 class CreateCategoryService{
-    async execute({name, user_id}: createCategoryProps){
+    async execute({name, business_id}: createCategoryProps){
        
         try{
             const category = prismaClient.category.create({
                 data:{
                     name: name,
-                    user_id
+                    business_id
                 }, 
 
                 select:{
