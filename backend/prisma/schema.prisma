@@ -17,6 +17,19 @@ enum Role{
   ADMIN
 }
 
+model Business {
+  id          String     @id @default(uuid())
+  name        String
+  cnpj        String     @unique
+  description String
+  users       User[]
+  categories  Category[]
+  products    Product[]
+  orders      Order[]
+
+  @@map("business")
+}
+
 model User{
   id String @id @default (uuid())
   name String
@@ -27,8 +40,12 @@ model User{
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  categories Category[]
+  id_pizza_place String?
+  business Business? @relation(fields: [id_pizza_place], references: [id])
+  legacy_categories Category[]
   orders Order[]
+
+  @@index([id_pizza_place])
 
   @@map("users")
 }
@@ -37,13 +54,16 @@ model Category {
   id String @id @default(uuid())
   name String
   products Product[]
-  user_id String?
-  user User? @relation(fields: [user_id], references: [id])
+  business_id String?
+  business Business? @relation(fields: [business_id], references: [id])
+  legacy_owner_id String?
+  legacy_owner User? @relation(fields: [legacy_owner_id], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@index([user_id])
+  @@index([business_id])
+  @@index([legacy_owner_id])
   @@map("categories")
 }
 
@@ -54,7 +74,9 @@ model Product{
   description String
   banner String 
   disabled Boolean @default(false)
-  category_id String 
+  category_id String
+  business_id String?
+  business Business? @relation(fields: [business_id], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -63,6 +85,7 @@ model Product{
 
   itens Item[]
 
+  @@index([business_id])
   @@map("products")
 }
 
@@ -78,7 +101,10 @@ model Order{
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  business_id String?
+  business Business? @relation(fields: [business_id], references: [id])
   itens Item[]
+  @@index([business_id])
   @@index([user_id])
   @@map("orders")
 }
