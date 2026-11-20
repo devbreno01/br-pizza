@@ -48,8 +48,8 @@ BR Pizza é um sistema de gestão interna para pizzarias que atendem por mesa. O
 | `/register` | Público | Cadastro de usuário. Após o sucesso, encaminha para `/login`. |
 | `/login` | Público | Inicia a sessão. Usuários autenticados são encaminhados para `/dashboard`. |
 | `/access-denied` | Público | Exibe a mensagem de acesso negado. |
-| `/dashboard` | `ADMIN` | Lista pedidos pendentes enviados à cozinha. Permite consultar o detalhe e finalizar o pedido. |
-| `/dashboard/categories` | `ADMIN` | Lista e cadastra categorias. |
+| `/dashboard` | `ADMIN` | Lista pedidos pendentes enviados à cozinha. Permite consultar o detalhe e finalizar o pedido. Aceita `page` e `limit` na URL, com valores padrão 1 e 10. |
+| `/dashboard/categories` | `ADMIN` | Lista e cadastra categorias. Aceita `page` e `limit` na URL, com valores padrão 1 e 10. |
 | `/dashboard/products` | `ADMIN` | Lista, cadastra e exclui produtos. Aceita `page` e `limit` na URL, com valores padrão 1 e 6. |
 
 O layout compartilhado do painel consulta a sessão via `GET /me`. Se a sessão não puder ser validada, redireciona para `/register`. Se o perfil for `STAFF`, redireciona para `/access-denied`. Sair do painel remove o cookie de sessão e redireciona para `/login`.
@@ -65,13 +65,13 @@ As rotas são montadas na raiz da API. Envie o cabeçalho `Authorization: Bearer
 | POST | `/session` | Público | Autentica com `email` e `password` e retorna o JWT em `autenticate.token`. |
 | GET | `/me` | Autenticado | Retorna os dados e o perfil do usuário atual. |
 | POST | `/category` | `ADMIN` | Cadastra categoria com `name`. |
-| GET | `/categories` | Autenticado | Lista as categorias. |
+| GET | `/categories` | Autenticado | Lista as categorias com paginação. |
 | POST | `/products` | `ADMIN` | Cadastra produto via `multipart/form-data` com `name`, `price`, `description`, `category_id` e `file`. |
 | GET | `/products` | Autenticado | Lista produtos por nome em ordem crescente. Aceita `page` (padrão 1), `limit` (padrão 10) e `disabled=true\|false` na consulta. |
 | DELETE | `/products/:id` | `ADMIN` | Exclui o produto identificado por `:id`. Retorna `401` se faltar um token válido ou a permissão administrativa e `400` se a exclusão falhar. |
-| GET | `/category/product/:category_id` | Autenticado | Lista os produtos ativos da categoria informada. |
+| GET | `/category/product/:category_id` | Autenticado | Lista os produtos ativos da categoria informada com paginação. |
 | POST | `/orders` | Autenticado | Cria um pedido com `table`, `draft`, `status` e `name` opcional. |
-| GET | `/orders` | Autenticado | Lista os pedidos com seus itens. Aceita o filtro `draft=true\|false` na consulta. |
+| GET | `/orders` | Autenticado | Lista os pedidos paginados com seus itens. Aceita os filtros `draft` e `status`, ambos booleanos. |
 | POST | `/order/add` | Autenticado | Adiciona um item com `order_id`, `product_id` e `amount`. |
 | DELETE | `/order/remove/:id` | Autenticado | Remove o item identificado por `:id`. |
 | GET | `/order/detail/:id` | Autenticado | Consulta o pedido identificado por `:id`, incluindo os itens. |
@@ -79,7 +79,7 @@ As rotas são montadas na raiz da API. Envie o cabeçalho `Authorization: Bearer
 | PUT | `/order/finish` | Autenticado | Finaliza o pedido com `order_id` e `name`. |
 | DELETE | `/order/:id` | Autenticado | Exclui o pedido identificado por `:id`. |
 
-Em `GET /products`, a lista vem em `data.list`. A resposta também inclui `page`, `limit` e `totalPages`. O total de páginas usa os mesmos filtros de usuário e de `disabled` que a lista.
+As listagens aceitam `page` e `limit`, com valores padrão 1 e 10 e limite máximo de 100 por página. Cada resposta inclui `page`, `limit` e `totalPages`. O total usa os mesmos filtros que a lista. Categorias vêm em `data`, produtos em `data.list` e pedidos em `listOrders`. O painel consulta pedidos com `draft=false&status=false` antes da paginação.
 
 ## Decisões técnicas e padrões
 

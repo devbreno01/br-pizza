@@ -290,15 +290,24 @@ router.post(
  *       - Category
  *     security:
  *       - BearerAuth: []
+ *     parameters:
+ *       - { in: query, name: page, schema: { type: integer, minimum: 1, default: 1 } }
+ *       - { in: query, name: limit, schema: { type: integer, minimum: 1, maximum: 100, default: 10 } }
  *     responses:
  *       200:
  *         description: List of categories
  *         content:
  *           application/json:
  *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Category'
+ *               type: object
+ *               properties:
+ *                 message: { type: string }
+ *                 data:
+ *                   type: array
+ *                   items: { $ref: "#/components/schemas/Category" }
+ *                 page: { type: integer }
+ *                 limit: { type: integer }
+ *                 totalPages: { type: integer }
  *       401:
  *         description: Unauthorized
  */
@@ -434,6 +443,8 @@ router.delete(
  *     security:
  *       - BearerAuth: []
  *     parameters:
+ *       - { in: query, name: page, schema: { type: integer, minimum: 1, default: 1 } }
+ *       - { in: query, name: limit, schema: { type: integer, minimum: 1, maximum: 100, default: 10 } }
  *       - in: path
  *         name: category_id
  *         required: true
@@ -447,13 +458,20 @@ router.delete(
  *         content:
  *           application/json:
  *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Product'
+ *               type: object
+ *               properties:
+ *                 message: { type: string }
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     list:
+ *                       type: array
+ *                       items: { $ref: "#/components/schemas/Product" }
+ *                 page: { type: integer }
+ *                 limit: { type: integer }
+ *                 totalPages: { type: integer }
  *       401:
  *         description: Unauthorized
- *       404:
- *         description: Category not found
  */
 router.get(
     "/category/product/:category_id",
@@ -519,15 +537,25 @@ router.post(
  *       - Order
  *     security:
  *       - BearerAuth: []
+ *     parameters:
+ *       - { in: query, name: page, schema: { type: integer, minimum: 1, default: 1 } }
+ *       - { in: query, name: limit, schema: { type: integer, minimum: 1, maximum: 100, default: 10 } }
+ *       - { in: query, name: draft, schema: { type: boolean } }
+ *       - { in: query, name: status, description: Whether the order is finished, schema: { type: boolean } }
  *     responses:
  *       200:
  *         description: List of orders
  *         content:
  *           application/json:
  *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Order'
+ *               type: object
+ *               properties:
+ *                 listOrders:
+ *                   type: array
+ *                   items: { $ref: "#/components/schemas/Order" }
+ *                 page: { type: integer }
+ *                 limit: { type: integer }
+ *                 totalPages: { type: integer }
  *       401:
  *         description: Unauthorized
  */
